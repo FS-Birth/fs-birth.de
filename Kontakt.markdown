@@ -6,5 +6,5 @@ permalink: /Kontakt/
 
 Sebastian Birth
 
-Email: sebastian@fs-birth.de  
-Telefon: +49 40 30980506
+<a href="mailto:sebastian@fs-birth.de?subjekt=Anfrage%20per%20Website.">sebastian@fsbirth.de</a>  
+<a href="tel:+494030980506">+49 40 30980506</a>
