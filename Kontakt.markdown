@@ -8,4 +8,4 @@ Sebastian Birth
 
 <a href="mailto:sebastian@fs-birth.de?subjekt=Anfrage%20per%20Website.">sebastian@fsbirth.de</a>  
 <a href="tel:+494030980506">+49 40 30980506</a>
-<a href="https://www.instagram.com/fs_birth/"><img src="https://fs-birth/bilder/IG_brand_asset_pack_2023/01 Static Glyph/01 Gradient Glyph/Instagram_Glyph_Gradient.png" alt="Instagram">
+<a href="https://www.instagram.com/fs_birth/"><img src="https://fs-birth.de/bilder/IG_brand_asset_pack_2023/01 Static Glyph/01 Gradient Glyph/Instagram_Glyph_Gradient.png" alt="Instagram">
