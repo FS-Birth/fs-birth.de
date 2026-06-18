@@ -6,7 +6,7 @@ permalink: /Kontakt/
   
 Sebastian Birth
 
-<a href="mailto:sebastian@fs-birth.de?subject=Anfrage%20per%20Website: .">sebastian@fs-birth.de</a><br>
+<a href="mailto:sebastian@fs-birth.de?subject=Anfrage%20per%20Website: ">sebastian@fs-birth.de</a><br>
 <br>
 <a href="tel:+494030980506">+49 40 30980506</a><br>
 <br>
