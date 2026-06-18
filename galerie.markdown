@@ -4,4 +4,4 @@ title: Galerie
 permalink: /galerie/
 ---
 
-<img src="fs-birth.de/bilder/fsb-icon_oo.png" alt="FS-B LOGO">
+<img src="https://fs-birth.de/bilder/fsb-icon_oo.png" alt="FS-B LOGO">
