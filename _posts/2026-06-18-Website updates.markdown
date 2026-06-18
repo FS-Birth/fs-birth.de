@@ -4,7 +4,8 @@ title:  Website updates
 date:   2026-06-18 22:03:10 +0200
 categories: daily
 ---
-moin,
+moin,<br>
+
 vormittags recht und buchaltung büffeln, abends tutorials zu github, html und jekyll inhalieren.<br>
 langsam spüre ich ein wenig verständnis für den umgang mit dieser **seite**.<br>
 mein ziel war es seit montag ein *"favicon"* einzufügen.<br>
