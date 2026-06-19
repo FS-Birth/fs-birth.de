@@ -5,11 +5,11 @@ permalink: /tables/
 ---
 <table>
     <tr>
-        <td>*spalte*</td>
-        <td>*spalte 2*</td>
+        <td><b>spalte</b></td>
+        <td><b>spalte 2</b></td>
     </tr>
     <tr>
-        <td>*inhalt*</td>
-        <td>*inhalt2*</tb>
+        <td>inhalt</td>
+        <td>inhalt2</tb>
     </tr>
 </table>
