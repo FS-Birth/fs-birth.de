@@ -2,14 +2,14 @@
 layout: page
 title: Tabellen
 permalink: /tables/
+published: false
 ---
 <table>
     <tr>
-        <td><b>spalte</b></td>
-        <td><b>spalte 2</b></td>
+        <th scope="col">spalte</th>
+        <th scope="col">spalte 2</th>
+        <th scope="col">spalte 3</th>
     </tr>
     <tr>
-        <td>inhalt</td>
-        <td>inhalt2</tb>
-    </tr>
-</table>
+        <th scope="row">inhalt</th>
+        <td scope="row" rowspan="2">inhalt 2/3</td>
