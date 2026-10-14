@@ -5,7 +5,11 @@
 layout: page
 ---
 
-<h>Hier entsteht etwas schönes</h>
+<img src="/bilder/fsb-icon_oo.png" alt="FS-Birth Logo" width="250" style="float: right; margin: 0 0 1em 1.5em;">
+
+<h1><strong>Hier entsteht etwas schönes</strong></h1>
+
+<br><br><br><br><br>
 
 Sebastian Birth
 
@@ -13,4 +17,4 @@ Sebastian Birth
 <br>
 <a href="tel:+494030980506">+49 40 30980506</a><br>
 <br>
-<a href="https://www.instagram.com/fs_birth/"><img src="https://fs-birth.de/bilder/Instagram_Glyph_Gradient.png" alt="Instagram" height="60" width="60">
+<a href="https://www.instagram.com/fs_birth/"><img src="https://fs-birth.de/bilder/Instagram_Glyph_Gradient.png" alt="Instagram" height="60" width="60"></a>
