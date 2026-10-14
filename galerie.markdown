@@ -2,6 +2,7 @@
 layout: page
 title: Galerie
 permalink: /galerie/
+published: false
 ---
 <figure>
 <img src="https://fs-birth.de/bilder/fsb-icon_oo.png" alt="FS-B LOGO">
