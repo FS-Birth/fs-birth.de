@@ -1,0 +1,9 @@
+{
+  "name": "fs-birth.de (Jekyll)",
+  "image": "mcr.microsoft.com/devcontainers/jekyll:2-bookworm",
+  "forwardPorts": [4000],
+  "portsAttributes": {
+    "4000": { "label": "Website", "onAutoForward": "openBrowser" }
+  },
+  "postCreateCommand": "bundle install"
+}
