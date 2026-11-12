@@ -6,7 +6,8 @@ permalink: /impressum/
 
 ## Angaben gemäß § 5 DDG
 
-Inhaber*in: Sebastian Birth<br>
+Inhaber*in:<br>
+Sebastian Birth<br>
 Netzestraße 11<br>
 22547 Hamburg<br>
 Deutschland
