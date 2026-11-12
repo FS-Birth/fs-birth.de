@@ -4,11 +4,11 @@ title: Impressum
 permalink: /impressum/
 ---
 
-<h1>Impressum</h1>
   
   <div class="section">
     <h2>Angaben gemäß § 5 DDG</h2>
-    <p><strong>Inhaber*in:</strong> Sebastian Birth</p>
+    <p><strong>Inhaber*in:</strong></p>
+    <p>Sebastian Birth</p>
     <p>Netzestraße 11</p>
     <p>22547 Hamburg</p>
     <p>Deutschland</p>
