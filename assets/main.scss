@@ -94,7 +94,7 @@ p { margin: 0 0 1em; }
     84–88px  Bordstein (gelb)                                     */
 .site-header {
   --asphalt: #45474b;
-  --road-top: 56px;
+  --road-top: 36px;   /* vorher 56px – Header jetzt 70px statt 90px hoch */
   --road-h: 28px;
   background: var(--anthrazit);
   color: #fff;
@@ -134,8 +134,12 @@ p { margin: 0 0 1em; }
 .site-brand .brand-text {
   position: relative;
   margin-top: calc(var(--float-top) + 1px);
-  color: var(--gelb);
-  text-shadow: 0 0 2px #1f2023, 0 0 4px rgba(0,0,0,.8), 0 2px 3px rgba(0,0,0,.6) !important; /* Kontur = lesbar über der Randlinie */
+  color: #fff;
+  /* schwarze Outline (8 Richtungen) + weicher Schatten */
+  text-shadow:
+    -1px -1px 0 #000, 0 -1px 0 #000, 1px -1px 0 #000, -1px 0 0 #000,
+    1px 0 0 #000, -1px 1px 0 #000, 0 1px 0 #000, 1px 1px 0 #000,
+    0 3px 4px rgba(0,0,0,.5) !important;
 }
 .site-brand .brand-text::after {
   content: "";
@@ -146,7 +150,7 @@ p { margin: 0 0 1em; }
   border-radius: 50%;
   background: radial-gradient(ellipse at center, rgba(0,0,0,.5), transparent 70%);
 }
-.site-brand:hover .brand-text { color: #ffe36a; }
+.site-brand:hover .brand-text { color: #fff; opacity: .9; }
 /* Auto = Karosserie + 2 Räder; Positionen in % der Originalgrafik (1600×1194).
    Reifenunterkante (~95% der Bildhöhe) steht auf der vorderen Fahrspur. */
 .car {
@@ -155,7 +159,7 @@ p { margin: 0 0 1em; }
   flex: none;
   width: 76px;
   aspect-ratio: 1600 / 1194;
-  margin-top: 24px;
+  margin-top: 4px;   /* Reifen stehen bei --road-top + 22px */
   filter: drop-shadow(0 1px 1px rgba(0,0,0,.4));
 }
 .car::before {           /* Bodenschatten unter dem Auto */
@@ -225,13 +229,13 @@ p { margin: 0 0 1em; }
   .intro .nav-burger { animation: none; }
 }
 .site-brand .brand-text { font-weight: 800; font-size: 1.25rem; line-height: 1.1; }
-.site-brand small { display: block; font-weight: 600; font-size: .75rem; color: var(--gelb); letter-spacing: .05em; }
+.site-brand small { display: block; font-weight: 600; font-size: .75rem; color: #fff; letter-spacing: .05em; }
 .site-brand:hover { color: #fff; }
 
 /* Navigation schwebt auf Höhe des Autos über der Fahrbahn.
-   Bodenkontakt des Autos liegt bei ~78px; Buttons schweben 7px darüber
+   Bodenkontakt des Autos liegt bei ~58px (--road-top + 22px); Buttons schweben 7px darüber
    und werfen einen Schatten auf die Straße. */
-:root { --float-top: 28px; --float-gap: 7px; }
+:root { --float-top: 8px; --float-gap: 7px; }
 
 .site-nav { display: flex; gap: 8px; margin-top: var(--float-top); }
 .site-nav a, .nav-burger {
