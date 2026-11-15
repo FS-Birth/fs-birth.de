@@ -2,7 +2,7 @@
   Anfrage-Popup. Jeder Button mit data-anfrage="Leistung" öffnet es.
   Beim Absenden wird die Anfrage direkt per Formular-Dienst (site.anfrage_endpoint,
   siehe _config.yml) als Mail an site.anfrage_email geschickt –
-  Betreff: "Anfrage: <Leistung>". Klappt das nicht, wird als Ausweg ein
+  Betreff: "<Name>/<Leistung>". Klappt das nicht, wird als Ausweg ein
   vorausgefüllter Mail-Link angeboten.
 {%- endcomment -%}
 <dialog id="anfrage" class="anfrage" aria-labelledby="anfrage-titel">
@@ -83,7 +83,7 @@
   function mailtoLink(d) {
     var body = 'Leistung: ' + leistung + '\nName: ' + d.name + '\nTelefon: ' + (d.telefon || '-') +
                '\nE-Mail: ' + d.email + '\n\n' + d.nachricht;
-    return 'mailto:' + MAIL + '?subject=' + encodeURIComponent('Anfrage: ' + leistung) + '&body=' + encodeURIComponent(body);
+    return 'mailto:' + MAIL + '?subject=' + encodeURIComponent(d.name + '/' + leistung) + '&body=' + encodeURIComponent(body);
   }
 
   form.addEventListener('submit', function (e) {
@@ -99,7 +99,7 @@
       Telefon: d.telefon || '-',
       'E-Mail': d.email,
       Nachricht: d.nachricht,
-      _subject: 'Anfrage: ' + leistung,
+      _subject: d.name + '/' + leistung,   /* Betreff: <Name>/<Leistung> */
       _replyto: d.email,        /* "Antworten" geht direkt an den Kunden */
       _template: 'table',
       _captcha: 'false',
