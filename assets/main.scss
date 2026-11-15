@@ -168,6 +168,7 @@ p { margin: 0 0 1em; }
    Reifenunterkante (~95% der Bildhöhe) steht auf der vorderen Fahrspur. */
 .car {
   position: relative;
+  z-index: 2;   /* über dem Schriftzug samt Mittellinien-Abdeckung (die hat z-index 1) */
   display: block;
   flex: none;
   width: 76px;
