@@ -112,7 +112,7 @@ p { margin: 0 0 1em; }
   border-bottom: 4px solid var(--gelb);          /* Bordstein vorne */
   background:
     /* gestrichelte Mittellinie, im hinteren Drittel = perspektivisch "weiter weg" */
-    repeating-linear-gradient(90deg, rgba(255,255,255,.6) 0 30px, transparent 30px 66px) -12px 9px / calc(100% + 12px) 2px no-repeat, /* -12px: Striche 12px nach links (header.html: OFFSET) */
+    repeating-linear-gradient(90deg, rgba(255,255,255,.6) 0 30px, transparent 30px 66px) -11px 9px / calc(100% + 11px) 2px no-repeat, /* -11px: Striche 11px nach links (header.html: OFFSET) */
     /* Asphaltkörnung */
     radial-gradient(circle at 30% 40%, rgba(255,255,255,.05) 0 1px, transparent 1.5px) 0 0 / 6px 6px,
     radial-gradient(circle at 70% 70%, rgba(0,0,0,.22) 0 1px, transparent 1.5px) 0 0 / 5px 5px,
