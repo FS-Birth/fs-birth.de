@@ -30,9 +30,13 @@ title: Home
         if (!row || !window.ResizeObserver) return;
         var cta = row.querySelector('.hero-cta');
         var icons = row.querySelector('.socials');
+        var btns = cta.children;
         function update() {
-          row.classList.remove('is-wrapped');
+          row.classList.remove('is-wrapped', 'is-stacked');
           row.classList.toggle('is-wrapped', icons.offsetTop > cta.offsetTop);
+          /* "Anfrage stellen" unter "Leistungen ansehen"? Dann auch die
+             Social-Buttons untereinander. */
+          row.classList.toggle('is-stacked', btns[1].offsetTop > btns[0].offsetTop);
         }
         update();
         new ResizeObserver(update).observe(row);

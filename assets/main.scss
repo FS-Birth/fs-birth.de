@@ -191,6 +191,7 @@ p { margin: 0 0 1em; }
 .hero-buttons.is-wrapped .socials { flex-basis: 100%; }
 .hero-buttons.is-wrapped .social { width: auto; padding: 0 1.1em 0 .8em; font-weight: 700; }
 .hero-buttons.is-wrapped .social span { display: inline; }
+.hero-buttons.is-stacked .socials { flex-direction: column; align-items: flex-start; gap: 12px; }
 .hero-refs { display: grid; gap: 16px; }
 
 section { margin-bottom: 48px; }
