@@ -544,3 +544,13 @@ section { margin-bottom: 48px; }
   padding: 4px 12px; border-radius: 999px;
   background: rgba(0,0,0,.5); color: #fff; font-size: .9rem;
 }
+
+/* Vorschau zeigt das ganze Foto (nicht beschnitten); der freie Rand wird
+   mit einer unscharfen, abgedunkelten Version desselben Fotos gefüllt. */
+.ref-img.has-photo::before {
+  content: "";
+  position: absolute; inset: -24px;
+  background: var(--bg) center / cover;
+  filter: blur(18px) brightness(.65);
+}
+.ref-img.has-photo > img { position: relative; object-fit: contain; }

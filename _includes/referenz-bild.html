@@ -6,7 +6,7 @@
 {%- assign r = include.ref -%}
 {%- assign imgs = "" | split: "" -%}
 {%- if r.bilder -%}{%- assign imgs = r.bilder -%}{%- elsif r.bild and r.bild != "" -%}{%- assign imgs = r.bild | split: "|" -%}{%- endif -%}
-<figure class="ref-img"
+<figure class="ref-img{% if imgs.size > 0 %} has-photo{% endif %}"{% if imgs.size > 0 %} style="--bg: url('{{ imgs[0] | relative_url }}')"{% endif %}
   {%- if include.zoom %} data-zoom tabindex="0" role="button" aria-label="{% if r %}{{ r.titel | escape }} – {% endif %}Bild vergrößern"{% endif -%}
   {%- if imgs.size > 1 %} data-bilder="{% for i in imgs %}{{ i | relative_url }}{% unless forloop.last %}|{% endunless %}{% endfor %}"{% endif %}>
   {%- if imgs.size > 0 -%}
