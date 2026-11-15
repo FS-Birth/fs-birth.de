@@ -1,68 +1,130 @@
 {%- comment -%}
   Anfrage-Popup. Jeder Button mit data-anfrage="Leistung" öffnet es.
-  Beim Absenden wird das E-Mail-Programm des Besuchers mit vorausgefüllter
-  Mail an site.email geöffnet (Betreff: "Anfrage: <Leistung>").
+  Beim Absenden wird die Anfrage direkt per Formular-Dienst (site.anfrage_endpoint,
+  siehe _config.yml) als Mail an site.anfrage_email geschickt –
+  Betreff: "Anfrage: <Leistung>". Klappt das nicht, wird als Ausweg ein
+  vorausgefüllter Mail-Link angeboten.
 {%- endcomment -%}
 <dialog id="anfrage" class="anfrage" aria-labelledby="anfrage-titel">
-  <form id="anfrage-form" method="dialog">
+  <form id="anfrage-form" method="dialog" novalidate>
     <h2 id="anfrage-titel">Anfrage zu <span data-anfrage-leistung>…</span></h2>
 
-    <label>Name*
-      <input name="name" required autocomplete="name">
-    </label>
-    <label>Telefon
-      <input name="telefon" type="tel" autocomplete="tel">
-    </label>
-    <label>E-Mail*
-      <input name="email" type="email" required autocomplete="email">
-    </label>
-    <label>Nachricht*
-      <textarea name="nachricht" rows="5" required></textarea>
-    </label>
-    <p class="anfrage-hinweis">* Pflichtfelder. Beim Senden öffnet sich dein E-Mail-Programm mit der fertigen Anfrage.</p>
+    <div data-anfrage-felder>
+      <label>Name*
+        <input name="name" required autocomplete="name">
+      </label>
+      <label>Telefon
+        <input name="telefon" type="tel" autocomplete="tel">
+      </label>
+      <label>E-Mail*
+        <input name="email" type="email" required autocomplete="email">
+      </label>
+      <label>Nachricht*
+        <textarea name="nachricht" rows="5" required></textarea>
+      </label>
+      {%- comment -%} Spamfalle: für Menschen unsichtbar, Bots füllen es aus {%- endcomment -%}
+      <input type="text" name="_honey" class="anfrage-honey" tabindex="-1" autocomplete="off" aria-hidden="true">
 
-    <div class="anfrage-buttons">
-      <button type="button" class="btn btn--ghost" data-anfrage-abbrechen>Abbrechen</button>
-      <button type="submit" class="btn">Senden</button>
+      <p class="anfrage-hinweis">
+        * Pflichtfelder. Deine Angaben werden zur Bearbeitung der Anfrage über den Dienst
+        FormSubmit an mich übermittelt. Mehr dazu in der <a href="{{ "/datenschutz/" | relative_url }}">Datenschutzerklärung</a>.
+      </p>
+      <p class="anfrage-status" data-anfrage-status role="status" aria-live="polite"></p>
+
+      <div class="anfrage-buttons">
+        <button type="button" class="btn btn--ghost" data-anfrage-abbrechen>Abbrechen</button>
+        <button type="submit" class="btn" data-anfrage-senden>Senden</button>
+      </div>
+    </div>
+
+    <div class="anfrage-danke" data-anfrage-danke hidden>
+      <p><strong>Danke für deine Anfrage!</strong><br>
+      Sie ist bei mir angekommen – ich melde mich so schnell wie möglich bei dir.</p>
+      <div class="anfrage-buttons">
+        <button type="button" class="btn" data-anfrage-abbrechen>Schließen</button>
+      </div>
     </div>
   </form>
 </dialog>
 
 <script>
 (function () {
+  var ENDPOINT = {{ site.anfrage_endpoint | jsonify }};
+  var MAIL = {{ site.anfrage_email | default: site.email | jsonify }};
   var dialog = document.getElementById('anfrage');
   var form = document.getElementById('anfrage-form');
   if (!dialog || !form || !dialog.showModal) return;
+  var felder = form.querySelector('[data-anfrage-felder]');
+  var danke = form.querySelector('[data-anfrage-danke]');
+  var status = form.querySelector('[data-anfrage-status]');
+  var senden = form.querySelector('[data-anfrage-senden]');
   var leistung = '';
+
+  function reset() {
+    form.reset(); felder.hidden = false; danke.hidden = true;
+    status.textContent = ''; status.className = 'anfrage-status';
+    senden.disabled = false; senden.textContent = 'Senden';
+  }
 
   document.addEventListener('click', function (e) {
     var btn = e.target.closest('[data-anfrage]');
     if (!btn) return;
     e.preventDefault();
+    reset();
     leistung = btn.getAttribute('data-anfrage');
     dialog.querySelector('[data-anfrage-leistung]').textContent = leistung;
     dialog.showModal();
   });
 
-  dialog.querySelector('[data-anfrage-abbrechen]').addEventListener('click', function () {
-    dialog.close();
+  form.querySelectorAll('[data-anfrage-abbrechen]').forEach(function (b) {
+    b.addEventListener('click', function () { dialog.close(); });
   });
+
+  function mailtoLink(d) {
+    var body = 'Leistung: ' + leistung + '\nName: ' + d.name + '\nTelefon: ' + (d.telefon || '-') +
+               '\nE-Mail: ' + d.email + '\n\n' + d.nachricht;
+    return 'mailto:' + MAIL + '?subject=' + encodeURIComponent('Anfrage: ' + leistung) + '&body=' + encodeURIComponent(body);
+  }
 
   form.addEventListener('submit', function (e) {
     e.preventDefault();
     if (!form.reportValidity()) return;
-    var d = new FormData(form);
-    var body =
-      'Leistung: ' + leistung + '\n' +
-      'Name: ' + d.get('name') + '\n' +
-      'Telefon: ' + (d.get('telefon') || '-') + '\n' +
-      'E-Mail: ' + d.get('email') + '\n\n' +
-      d.get('nachricht');
-    window.location.href = 'mailto:{{ site.email }}' +
-      '?subject=' + encodeURIComponent('Anfrage: ' + leistung) +
-      '&body=' + encodeURIComponent(body);
-    dialog.close();
-    form.reset();
+    var f = new FormData(form);
+    if (f.get('_honey')) { felder.hidden = true; danke.hidden = false; return; }  /* Bot: still verwerfen */
+
+    var d = { name: f.get('name'), telefon: f.get('telefon'), email: f.get('email'), nachricht: f.get('nachricht') };
+    var payload = {
+      Leistung: leistung,
+      Name: d.name,
+      Telefon: d.telefon || '-',
+      'E-Mail': d.email,
+      Nachricht: d.nachricht,
+      _subject: 'Anfrage: ' + leistung,
+      _replyto: d.email,        /* "Antworten" geht direkt an den Kunden */
+      _template: 'table',
+      _captcha: 'false',
+      _honey: ''
+    };
+
+    senden.disabled = true; senden.textContent = 'Wird gesendet …';
+    status.textContent = ''; status.className = 'anfrage-status';
+
+    fetch(ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(payload)
+    })
+      .then(function (res) { return res.json().catch(function () { return {}; }).then(function (j) { return { ok: res.ok, j: j }; }); })
+      .then(function (r) {
+        if (!r.ok || r.j.success === false || r.j.success === 'false') throw new Error(r.j.message || 'Fehler');
+        felder.hidden = true; danke.hidden = false;
+      })
+      .catch(function () {
+        senden.disabled = false; senden.textContent = 'Erneut senden';
+        status.className = 'anfrage-status anfrage-status--fehler';
+        status.innerHTML = 'Das Senden hat leider nicht geklappt. Du kannst es erneut versuchen oder ' +
+          '<a href="' + mailtoLink(d) + '">die Anfrage per E-Mail schicken</a>.';
+      });
   });
 })();
 </script>

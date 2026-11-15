@@ -64,6 +64,12 @@ youtube_url: "https://www.youtube.com/@FSBirth" # z. B. "https://www.youtube.com
 address: "Netzestraße 11, 22547 Hamburg"
 portrait: "/bilder/portrait.jpg"   # leer ("") = Platzhalter "SB"
 
+# Anfrage-Formular: wird direkt verschickt (ohne Mailprogramm des Kunden).
+# Dienst: FormSubmit (formsubmit.co) – beim ERSTEN Absenden kommt eine
+# Bestätigungsmail an anfrage_email, der Link darin muss einmal geklickt werden.
+anfrage_email: "info+anfragen@fs-birth.de"
+anfrage_endpoint: "https://formsubmit.co/ajax/info+anfragen@fs-birth.de"
+
 collections:
   referenzen:
     output: false

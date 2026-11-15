@@ -551,3 +551,10 @@ section { margin-bottom: 48px; }
 .ref-cell img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .35s ease; }
 /* Hover: das Foto unter der Maus wird etwas größer */
 .ref-img[data-zoom] .ref-cell:hover img { transform: scale(1.07); }
+
+/* Anfrage-Formular: Spamfalle, Status, Danke */
+.anfrage-honey { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+.anfrage-status:empty { display: none; }
+.anfrage-status { font-size: .9rem; }
+.anfrage-status--fehler { color: var(--rot); }
+.anfrage-danke p { font-size: 1.05rem; }
