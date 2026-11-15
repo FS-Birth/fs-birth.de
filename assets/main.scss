@@ -609,12 +609,7 @@ section { margin-bottom: 48px; }
 }
 
 /* ---------- Team (Kontaktseite, _data/team.yml) ---------- */
-.contact { grid-template-columns: 1fr; }
-.team-title { margin-top: 40px; }
-.team { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
-.team-card { display: flex; align-items: center; gap: 20px; }
-.team-card .portrait { width: 110px; flex: none; border-width: 3px; }
-.team-card .portrait span { font-size: 2.2rem; }
-.team-text h3 { margin: 6px 0 4px; font-size: 1.2rem; }
+.contact + .contact { margin-top: 20px; }   /* mehrere Crew-Karten untereinander */
 .team-aufgaben { margin: 0; color: var(--text-2); font-size: .95rem; }
 .team-aufgaben span { font-weight: 600; color: var(--text); }
+.crew-rolle { margin: 0 0 6px; font-size: 1.4rem; }

@@ -1,9 +1,12 @@
-# Team auf der Kontaktseite – Reihenfolge = Reihenfolge auf der Seite.
-# bild: Pfad zum Foto (quadratisch wirkt am besten)
+# Crew auf der Kontaktseite – Reihenfolge = Reihenfolge auf der Seite.
+# position: Überschrift der Karte (z. B. Captain)
+# bild:     Foto (quadratisch wirkt am besten)
+# kontakt:  true = Firmenkontakt (Telefon, E-Mail, Adresse, Socials, Anfrage) in dieser Karte
 # aufgaben: Liste, darf auch fehlen
 - name: Sebastian Birth
   position: Captain
   bild: /bilder/portrait.jpg
+  kontakt: true
 
 - name: Mystery dude
   position: First Mate

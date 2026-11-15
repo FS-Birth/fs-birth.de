@@ -1,11 +1,21 @@
 ---
 layout: page
 title: Kontakt
+heading: Die Crew
 permalink: /kontakt/
 ---
+{%- comment -%} Eine Karte pro Person – Inhalte in _data/team.yml {%- endcomment -%}
+{%- for p in site.data.team -%}
 <div class="contact card">
   <div class="contact-text">
-    <p><strong>Fahrender Schlosser Birth</strong></p>
+    {%- if p.position -%}<h2 class="crew-rolle">{{ p.position | escape }}</h2>{%- endif -%}
+    <p><strong>{{ p.name | escape }}</strong>{% if p.kontakt %}<br>Fahrender Schlosser Birth{% endif %}</p>
+
+    {%- if p.aufgaben -%}
+    <p class="team-aufgaben"><span>Aufgaben:</span> {{ p.aufgaben | join: " · " | escape }}</p>
+    {%- endif -%}
+
+    {%- if p.kontakt -%}
     <p>
       Telefon: <a href="tel:{{ site.tel | remove: " " }}">{{ site.tel }}</a><br>
       E-Mail: <a href="mailto:{{ site.email }}">{{ site.email }}</a><br>
@@ -19,28 +29,14 @@ permalink: /kontakt/
     </p>
 
     <p class="small"><a href="{{ "/impressum/" | relative_url }}">Impressum</a> · <a href="{{ "/datenschutz/" | relative_url }}">Datenschutz</a></p>
+    {%- endif -%}
+  </div>
+  <div class="portrait">
+    {%- if p.bild -%}
+      <img src="{{ p.bild | relative_url }}" alt="{{ p.name | escape }}">
+    {%- else -%}
+      <span aria-hidden="true">{{ p.name | slice: 0 }}</span>
+    {%- endif -%}
   </div>
 </div>
-
-{%- comment -%} Team – Inhalte in _data/team.yml {%- endcomment -%}
-<h2 class="team-title">Die Crew</h2>
-<div class="team">
-  {%- for p in site.data.team -%}
-  <div class="team-card card">
-    <div class="portrait">
-      {%- if p.bild -%}
-        <img src="{{ p.bild | relative_url }}" alt="{{ p.name | escape }}">
-      {%- else -%}
-        <span aria-hidden="true">{{ p.name | slice: 0 }}</span>
-      {%- endif -%}
-    </div>
-    <div class="team-text">
-      {%- if p.position -%}<span class="tag">{{ p.position | escape }}</span>{%- endif -%}
-      <h3>{{ p.name | escape }}</h3>
-      {%- if p.aufgaben -%}
-      <p class="team-aufgaben"><span>Aufgaben:</span> {{ p.aufgaben | join: " · " | escape }}</p>
-      {%- endif -%}
-    </div>
-  </div>
-  {%- endfor -%}
-</div>
+{%- endfor -%}
