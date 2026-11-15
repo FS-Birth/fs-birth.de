@@ -177,9 +177,10 @@ p { margin: 0 0 1em; }
   margin-bottom: 48px;
 }
 .hero-text p { font-size: 1.1rem; color: var(--text-2); }
-.hero-buttons { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; margin-top: 24px; }
+/* space-between: in einer Zeile = Icons rechts; umgebrochen = Icons links */
+.hero-buttons { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; justify-content: space-between; margin-top: 24px; }
 .hero-cta { display: flex; gap: 12px; flex-wrap: wrap; }
-.hero-buttons .socials { margin-left: auto; flex-wrap: nowrap; } /* rechtsbündig, bricht nur gemeinsam um */
+.hero-buttons .socials { flex-wrap: nowrap; } /* Icons brechen nur gemeinsam um */
 .hero-buttons .social { width: 52px; height: 52px; justify-content: center; padding: 0; background: var(--card); }
 .hero-buttons .social svg { width: 26px; height: 26px; }
 .hero-refs { display: grid; gap: 16px; }
