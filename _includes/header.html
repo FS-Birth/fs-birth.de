@@ -1,0 +1,20 @@
+{%- assign nav = "Home|/,Leistungen|/leistungen/,Galerie|/galerie/,Kontakt|/kontakt/" | split: "," -%}
+<header class="site-header">
+  <div class="wrapper header-inner">
+    <a class="site-brand" href="{{ "/" | relative_url }}">
+      <img src="{{ "/bilder/fsb-icon_oo.png" | relative_url }}" alt="" width="64" height="48">
+      <span>FS-Birth<small>Fahrender Schlosser</small></span>
+    </a>
+
+    <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-label="Menü öffnen">
+    <label for="nav-toggle" class="nav-burger" aria-hidden="true"><span></span></label>
+
+    <nav class="site-nav" aria-label="Hauptmenü">
+      {%- for item in nav -%}
+        {%- assign parts = item | split: "|" -%}
+        {%- assign url = parts[1] -%}
+        <a href="{{ url | relative_url }}"{% if page.url == url %} aria-current="page"{% endif %}>{{ parts[0] }}</a>
+      {%- endfor -%}
+    </nav>
+  </div>
+</header>

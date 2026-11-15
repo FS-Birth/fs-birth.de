@@ -1,0 +1,83 @@
+---
+layout: default
+title: Home
+---
+{%- assign a = site.data.aktuell -%}
+{%- assign start_refs = site.referenzen | where: "startseite", true | sort: "datum" | reverse -%}
+
+<!-- 1  Intro + Referenzbilder -->
+<section class="hero">
+  <div class="hero-text">
+    <p class="eyebrow">Fahrender Schlosser · Hamburg</p>
+    <h1>Metallbau &amp; Reparaturen – direkt bei dir vor Ort.</h1>
+    <p>
+      Ob Wartung, Instandhaltung, Maschinenbau oder Anfertigung nach Maß: Ich komme mit
+      meiner mobilen Werkstatt zu dir und erledige die Arbeit schnell, sauber und zuverlässig.
+    </p>
+    <div class="hero-buttons">
+      <a class="btn" href="{{ "/leistungen/" | relative_url }}">Leistungen ansehen</a>
+      <button class="btn btn--ghost" type="button" data-anfrage="Allgemeine Anfrage">Anfrage stellen</button>
+    </div>
+  </div>
+
+  <div class="hero-refs">
+    {%- for r in start_refs limit: 2 -%}
+      {%- include referenz-bild.html ref=r -%}
+    {%- else -%}
+      {%- include referenz-bild.html -%}
+      {%- include referenz-bild.html -%}
+    {%- endfor -%}
+  </div>
+</section>
+
+<!-- 2  Über mich -->
+<section class="about card">
+  {%- include portrait.html -%}
+  <div>
+    <h2>Über mich</h2>
+    <p>
+      Moin, ich bin Sebastian Birth. Als fahrender Schlosser bin ich in Hamburg und Umgebung
+      unterwegs und bringe Werkzeug, Material und Erfahrung direkt zu dir. Seit 2023 helfe ich
+      Privatkunden und Betrieben bei allem, was mit Metall zu tun hat.
+    </p>
+    <a href="{{ "/kontakt/" | relative_url }}">Kontakt aufnehmen →</a>
+  </div>
+</section>
+
+<!-- 3  Socials + Live/Ankündigung -->
+<section class="social-section">
+  <div class="section-head">
+    <h2>Socials</h2>
+    {%- include socials.html labels=true -%}
+  </div>
+
+  {%- if a.live and a.live_url != "" -%}
+  <div class="live card card--live">
+    <span class="live-badge">● LIVE</span>
+    <h3>{{ a.live_titel }}</h3>
+    <a class="btn" href="{{ a.live_url }}" target="_blank" rel="noopener">Zum Stream</a>
+  </div>
+  {%- elsif a.ankuendigung_titel != "" -%}
+  <div class="live card">
+    <span class="eyebrow">Ankündigung</span>
+    <h3>{{ a.ankuendigung_titel }}</h3>
+    <p>{{ a.ankuendigung_text }}</p>
+  </div>
+  {%- endif -%}
+</section>
+
+<!-- 4  Aktuelles -->
+<section class="news">
+  <h2>Aktuelles</h2>
+  <div class="news-grid">
+    {%- for post in site.posts limit: 3 -%}
+    <a class="news-item card" href="{{ post.url | relative_url }}">
+      <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%d.%m.%Y" }}</time>
+      <h3>{{ post.title | escape }}</h3>
+      <p>{{ post.content | strip_html | truncatewords: 22 }}</p>
+    </a>
+    {%- else -%}
+    <p>Noch keine Neuigkeiten.</p>
+    {%- endfor -%}
+  </div>
+</section>

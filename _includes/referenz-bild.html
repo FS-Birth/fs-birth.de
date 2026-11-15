@@ -1,0 +1,12 @@
+{%- assign r = include.ref -%}
+<figure class="ref-img">
+  {%- if r and r.bild and r.bild != "" -%}
+    <img src="{{ r.bild | relative_url }}" alt="{{ r.titel | escape }}" loading="lazy">
+  {%- else -%}
+    <div class="ref-placeholder" aria-hidden="true">
+      <img src="{{ "/bilder/fsb-icon_oo.png" | relative_url }}" alt="">
+      <span>Referenzbild folgt</span>
+    </div>
+  {%- endif -%}
+  {%- if r -%}<figcaption>{{ r.titel | escape }}</figcaption>{%- endif -%}
+</figure>

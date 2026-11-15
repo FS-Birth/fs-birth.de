@@ -1,0 +1,18 @@
+---
+layout: page
+title: Leistungen
+permalink: /leistungen/
+---
+{%- comment -%} Inhalte bearbeiten in _data/leistungen.yml {%- endcomment -%}
+
+<p class="lead">Was ich für dich tun kann. Klick auf „Anfrage“ – ich melde mich schnellstmöglich zurück.</p>
+
+<div class="services">
+  {%- for l in site.data.leistungen -%}
+  <div class="service card">
+    <h2>{{ l.titel | escape }}</h2>
+    <p>{{ l.beschreibung | escape }}</p>
+    <button type="button" class="btn" data-anfrage="{{ l.titel | escape }}">Anfrage</button>
+  </div>
+  {%- endfor -%}
+</div>

@@ -1,0 +1,68 @@
+{%- comment -%}
+  Anfrage-Popup. Jeder Button mit data-anfrage="Leistung" öffnet es.
+  Beim Absenden wird das E-Mail-Programm des Besuchers mit vorausgefüllter
+  Mail an site.email geöffnet (Betreff: "Anfrage: <Leistung>").
+{%- endcomment -%}
+<dialog id="anfrage" class="anfrage" aria-labelledby="anfrage-titel">
+  <form id="anfrage-form" method="dialog">
+    <h2 id="anfrage-titel">Anfrage zu <span data-anfrage-leistung>…</span></h2>
+
+    <label>Name*
+      <input name="name" required autocomplete="name">
+    </label>
+    <label>Telefon
+      <input name="telefon" type="tel" autocomplete="tel">
+    </label>
+    <label>E-Mail*
+      <input name="email" type="email" required autocomplete="email">
+    </label>
+    <label>Nachricht*
+      <textarea name="nachricht" rows="5" required></textarea>
+    </label>
+    <p class="anfrage-hinweis">* Pflichtfelder. Beim Senden öffnet sich dein E-Mail-Programm mit der fertigen Anfrage.</p>
+
+    <div class="anfrage-buttons">
+      <button type="button" class="btn btn--ghost" data-anfrage-abbrechen>Abbrechen</button>
+      <button type="submit" class="btn">Senden</button>
+    </div>
+  </form>
+</dialog>
+
+<script>
+(function () {
+  var dialog = document.getElementById('anfrage');
+  var form = document.getElementById('anfrage-form');
+  if (!dialog || !form || !dialog.showModal) return;
+  var leistung = '';
+
+  document.addEventListener('click', function (e) {
+    var btn = e.target.closest('[data-anfrage]');
+    if (!btn) return;
+    e.preventDefault();
+    leistung = btn.getAttribute('data-anfrage');
+    dialog.querySelector('[data-anfrage-leistung]').textContent = leistung;
+    dialog.showModal();
+  });
+
+  dialog.querySelector('[data-anfrage-abbrechen]').addEventListener('click', function () {
+    dialog.close();
+  });
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (!form.reportValidity()) return;
+    var d = new FormData(form);
+    var body =
+      'Leistung: ' + leistung + '\n' +
+      'Name: ' + d.get('name') + '\n' +
+      'Telefon: ' + (d.get('telefon') || '-') + '\n' +
+      'E-Mail: ' + d.get('email') + '\n\n' +
+      d.get('nachricht');
+    window.location.href = 'mailto:{{ site.email }}' +
+      '?subject=' + encodeURIComponent('Anfrage: ' + leistung) +
+      '&body=' + encodeURIComponent(body);
+    dialog.close();
+    form.reset();
+  });
+})();
+</script>

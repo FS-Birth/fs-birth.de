@@ -1,0 +1,30 @@
+---
+layout: page
+title: Galerie
+permalink: /galerie/
+---
+{%- comment -%}
+  Projekte kommen aus dem Ordner _referenzen/ (eine .md-Datei pro Projekt).
+  Neueste zuerst.
+{%- endcomment -%}
+{%- assign refs = site.referenzen | sort: "datum" | reverse -%}
+
+<p class="lead">Ein Einblick in meine Arbeiten – von der Reparatur vor Ort bis zur Anfertigung nach Maß.</p>
+
+<div class="gallery">
+  {%- for r in refs -%}
+  <article class="gallery-item card">
+    {%- include referenz-bild.html ref=r -%}
+    <div class="gallery-text">
+      <h2>{{ r.titel | escape }}</h2>
+      {{ r.content | markdownify }}
+      <p class="meta">
+        <span class="tag">{{ r.kategorie | escape }}</span>
+        <time datetime="{{ r.datum | date_to_xmlschema }}">{{ r.datum | date: "%d.%m.%Y" }}</time>
+      </p>
+    </div>
+  </article>
+  {%- else -%}
+  <p>Hier erscheinen bald die ersten Projekte.</p>
+  {%- endfor -%}
+</div>
