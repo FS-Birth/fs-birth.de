@@ -8,14 +8,25 @@
       sessionStorage.setItem('fsb-intro', '1');
     } catch (e) {}
     h.classList.add('intro');
+    /* Räder rollen ohne Rutschen: Strecke (Fensterbreite) / Radumfang.
+       Raddurchmesser ≈ 23.9% von 76px Autobreite. */
+    var umfang = Math.PI * 76 * 0.239;
+    h.style.setProperty('--roll', (-window.innerWidth / umfang).toFixed(2) + 'turn');
   })();
 </script>
 <header class="site-header">
   <div class="road" aria-hidden="true"></div>
   <div class="wrapper header-inner">
     <a class="site-brand" href="{{ "/" | relative_url }}" aria-label="FS-Birth – Startseite">
-      <img class="car" src="{{ "/bilder/fsb-icon_oo.png" | relative_url }}" alt="" width="76" height="57">
-      <span>FS-Birth<small>Fahrender Schlosser</small></span>
+      {%- comment -%} Logo-Auto aus 3 Teilen (bilder/logo-auto/), damit die Räder sich drehen können {%- endcomment -%}
+      <span class="car" aria-hidden="true">
+        <span class="car-chassis">
+          <img class="car-body" src="{{ "/bilder/logo-auto/car-body.png" | relative_url }}" alt="">
+          <img class="car-wheel car-wheel--front" src="{{ "/bilder/logo-auto/wheel-front.png" | relative_url }}" alt="">
+          <img class="car-wheel car-wheel--rear" src="{{ "/bilder/logo-auto/wheel-rear.png" | relative_url }}" alt="">
+        </span>
+      </span>
+      <span class="brand-text">FS-Birth<small>Fahrender Schlosser</small></span>
     </a>
 
     <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-label="Menü öffnen">
