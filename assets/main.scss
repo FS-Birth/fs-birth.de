@@ -178,7 +178,8 @@ p { margin: 0 0 1em; }
 }
 .hero-text p { font-size: 1.1rem; color: var(--text-2); }
 .hero-buttons { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; margin-top: 24px; }
-.hero-buttons .socials { display: contents; }
+.hero-cta { display: flex; gap: 12px; flex-wrap: wrap; }
+.hero-buttons .socials { margin-left: auto; flex-wrap: nowrap; } /* rechtsbündig, bricht nur gemeinsam um */
 .hero-buttons .social { width: 52px; height: 52px; justify-content: center; padding: 0; background: var(--card); }
 .hero-buttons .social svg { width: 26px; height: 26px; }
 .hero-refs { display: grid; gap: 16px; }

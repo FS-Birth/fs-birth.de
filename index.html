@@ -15,8 +15,10 @@ title: Home
       meiner mobilen Werkstatt zu dir und erledige die Arbeit schnell, sauber und zuverlässig.
     </p>
     <div class="hero-buttons">
-      <a class="btn" href="{{ "/leistungen/" | relative_url }}">Leistungen ansehen</a>
-      <button class="btn btn--ghost" type="button" data-anfrage="Allgemeine Anfrage">Anfrage stellen</button>
+      <div class="hero-cta">
+        <a class="btn" href="{{ "/leistungen/" | relative_url }}">Leistungen ansehen</a>
+        <button class="btn btn--ghost" type="button" data-anfrage="Allgemeine Anfrage">Anfrage stellen</button>
+      </div>
       {%- include socials.html -%}
     </div>
   </div>
