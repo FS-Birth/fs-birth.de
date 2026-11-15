@@ -134,7 +134,7 @@ p { margin: 0 0 1em; }
 .site-brand .brand-text {
   position: relative;
   z-index: 1;                /* eigene Ebene: Abdeckung (::before) liegt hinter der Schrift, aber über der Straße */
-  margin-top: 22px;          /* sitzt auf der Mittellinie (Linie bei --road-top + 11px = 47px) */
+  margin-top: 12px;          /* Unterkante (12 + 37px Höhe = 49px) = Unterkante der Mittellinie (47–49px) */
   color: #fff;
   /* schwarze Outline (8 Richtungen) + weicher Schatten */
   text-shadow:
@@ -148,7 +148,7 @@ p { margin: 0 0 1em; }
   content: "";
   position: absolute;
   z-index: -1;
-  top: 25px;                 /* 47px Linie − 22px Schriftzug-Oberkante */
+  top: 35px;                 /* Linie 47px − 12px Oberkante = untere 2px des Schriftzugs */
   height: 2px;
   left: var(--cover-l, -6px);
   right: var(--cover-r, -6px);
@@ -241,8 +241,8 @@ p { margin: 0 0 1em; }
   .intro .site-nav,
   .intro .nav-burger { animation: none; }
 }
-.site-brand .brand-text { font-weight: 800; font-size: 1.25rem; line-height: 1.1; }
-.site-brand small { display: block; font-weight: 600; font-size: .75rem; color: #fff; letter-spacing: .05em; }
+.site-brand .brand-text { font-weight: 800; font-size: 1.25rem; line-height: 23px; } /* feste Zeilenhöhen: Schriftzug = 23 + 14 = 37px hoch */
+.site-brand small { display: block; font-weight: 600; font-size: .75rem; line-height: 14px; color: #fff; letter-spacing: .05em; }
 .site-brand:hover { color: #fff; }
 
 /* Navigation schwebt auf Höhe des Autos über der Fahrbahn.
