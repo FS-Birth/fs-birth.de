@@ -17,6 +17,7 @@ title: Home
     <div class="hero-buttons">
       <a class="btn" href="{{ "/leistungen/" | relative_url }}">Leistungen ansehen</a>
       <button class="btn btn--ghost" type="button" data-anfrage="Allgemeine Anfrage">Anfrage stellen</button>
+      {%- include socials.html -%}
     </div>
   </div>
 
@@ -41,14 +42,6 @@ title: Home
       Privatkunden und Betrieben bei allem, was mit Metall zu tun hat.
     </p>
     <a href="{{ "/kontakt/" | relative_url }}">Kontakt aufnehmen →</a>
-  </div>
-</section>
-
-<!-- 3  Socials -->
-<section class="social-section">
-  <div class="section-head">
-    <h2>Socials</h2>
-    {%- include socials.html labels=true -%}
   </div>
 </section>
 
