@@ -1,0 +1,7 @@
+<div class="portrait">
+  {%- if site.portrait and site.portrait != "" -%}
+    <img src="{{ site.portrait | relative_url }}" alt="Sebastian Birth">
+  {%- else -%}
+    <span aria-hidden="true">SB</span>
+  {%- endif -%}
+</div>

@@ -1,0 +1,31 @@
+---
+layout: default
+---
+<article class="post blog-post" itemscope itemtype="http://schema.org/BlogPosting">
+  <p class="blog-back"><a href="{{ "/blog/" | relative_url }}">← Alle Beiträge</a></p>
+
+  <header class="post-header">
+    <p class="blog-meta">
+      <time datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished">{{ page.date | date: "%d.%m.%Y" }}</time>
+      {%- for c in page.categories limit: 1 %} · <span class="tag">{{ c | escape }}</span>{% endfor -%}
+    </p>
+    <h1 class="post-title" itemprop="name headline">{{ page.title | escape }}</h1>
+  </header>
+
+  {%- if page.bild -%}
+  <figure class="blog-hero"><img src="{{ page.bild | relative_url }}" alt=""></figure>
+  {%- endif -%}
+
+  <div class="post-content" itemprop="articleBody">
+    {{ content }}
+  </div>
+
+  <nav class="blog-pager" aria-label="Weitere Beiträge">
+    {%- if page.previous -%}
+      <a class="blog-pager-prev" href="{{ page.previous.url | relative_url }}">← {{ page.previous.title | escape }}</a>
+    {%- endif -%}
+    {%- if page.next -%}
+      <a class="blog-pager-next" href="{{ page.next.url | relative_url }}">{{ page.next.title | escape }} →</a>
+    {%- endif -%}
+  </nav>
+</article>

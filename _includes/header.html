@@ -1,0 +1,70 @@
+{%- assign nav = "Leistungen|/leistungen/,Galerie|/galerie/,Blog|/blog/,Kontakt|/kontakt/" | split: "," -%}
+<script>
+  /* Einfahrt-Animation nur beim ersten Seitenaufruf pro Browser-Sitzung */
+  (function () {
+    var h = document.documentElement;
+    try {
+      if (sessionStorage.getItem('fsb-intro')) return;
+      sessionStorage.setItem('fsb-intro', '1');
+    } catch (e) {}
+    h.classList.add('intro');
+    /* Räder rollen ohne Rutschen: Strecke (Fensterbreite) / Radumfang.
+       Raddurchmesser ≈ 23.9% von 76px Autobreite. */
+    var umfang = Math.PI * 76 * 0.239;
+    h.style.setProperty('--roll', (-window.innerWidth / umfang).toFixed(2) + 'turn');
+  })();
+</script>
+<header class="site-header">
+  <div class="road" aria-hidden="true"></div>
+  <div class="wrapper header-inner">
+    <a class="site-brand" href="{{ "/" | relative_url }}" aria-label="FS-Birth – Startseite">
+      {%- comment -%} Logo-Auto aus 3 Teilen (bilder/logo-auto/), damit die Räder sich drehen können {%- endcomment -%}
+      <span class="car" aria-hidden="true">
+        <span class="car-chassis">
+          <img class="car-body" src="{{ "/bilder/logo-auto/car-body.png" | relative_url }}" alt="">
+          <img class="car-wheel car-wheel--front" src="{{ "/bilder/logo-auto/wheel-front.png" | relative_url }}" alt="">
+          <img class="car-wheel car-wheel--rear" src="{{ "/bilder/logo-auto/wheel-rear.png" | relative_url }}" alt="">
+        </span>
+      </span>
+      <span class="brand-text">FS-Birth<small>Fahrender Schlosser</small></span>
+    </a>
+
+    <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-label="Menü öffnen">
+    <label for="nav-toggle" class="nav-burger" aria-hidden="true"><span></span></label>
+
+    <nav class="site-nav" aria-label="Hauptmenü">
+      {%- for item in nav -%}
+        {%- assign parts = item | split: "|" -%}
+        {%- assign url = parts[1] -%}
+        {%- assign aktiv = false -%}
+        {%- if page.url == url -%}{%- assign aktiv = true -%}{%- endif -%}
+        {%- if url == "/blog/" and page.collection == "posts" -%}{%- assign aktiv = true -%}{%- endif -%}
+        <a href="{{ url | relative_url }}"{% if aktiv %} aria-current="page"{% endif %}>{{ parts[0] }}</a>
+      {%- endfor -%}
+    </nav>
+  </div>
+</header>
+<script>
+  /* Mittellinien-Striche, die der Schriftzug berührt, komplett abdecken
+     (statt Strich-Stummel links/rechts). Muster muss zu .road in main.scss passen:
+     30px Strich, 36px Lücke, um OFFSET px verschoben (-11 = 11px nach links). */
+  (function () {
+    var DASH = 30, PERIOD = 66, PAD = 6, OFFSET = -11;
+    var text = document.querySelector('.site-brand .brand-text');
+    var road = document.querySelector('.site-header .road');
+    if (!text || !road) return;
+    function update() {
+      var t = text.getBoundingClientRect(), r = road.getBoundingClientRect();
+      var a = t.left - r.left, b = t.right - r.left;
+      var L = a - PAD, R = b + PAD;
+      var mL = (((L - OFFSET) % PERIOD) + PERIOD) % PERIOD, mR = (((R - OFFSET) % PERIOD) + PERIOD) % PERIOD;
+      if (mL < DASH) L -= mL + 1;            /* links: bis Strichanfang */
+      if (mR < DASH) R += DASH - mR + 1;     /* rechts: bis Strichende */
+      text.style.setProperty('--cover-l', (L - a) + 'px');
+      text.style.setProperty('--cover-r', (b - R) + 'px');
+    }
+    update();
+    window.addEventListener('resize', update);
+    if (document.fonts) document.fonts.ready.then(update);
+  })();
+</script>

@@ -1,0 +1,11 @@
+# Startseite: Live-Stream / Ankündigung
+# live: true  -> roter "LIVE"-Hinweis + Button zum Stream (ganz oben)
+# Ankündigung steht immer darunter (Titel leer lassen = Box ausblenden)
+live: false
+live_titel: "Jetzt live aus der Werkstatt"
+live_url: "https://www.youtube.com/@FSBirth"
+
+ankuendigung_titel: "Die neue Website ist online"
+ankuendigung_text: >-
+  Hier findest du ab sofort meine Leistungen, Referenzen aus der Werkstatt
+  und aktuelle Neuigkeiten. Schau gern regelmäßig vorbei!

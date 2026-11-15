@@ -1,0 +1,186 @@
+{%- comment -%}
+  Vollbild-Zoom für alle Elemente mit [data-zoom].
+  Klick / Enter / Leertaste: Bild zoomt aus seiner Position auf Bildschirmgröße.
+  Klick, Esc oder ✕: zoomt zurück an seinen Platz.
+{%- endcomment -%}
+<script>
+(function () {
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var DUR = 380, EASE = 'cubic-bezier(.2,.8,.2,1)';
+  var open = null; // { fig, clone, overlay, btn }
+
+  function rectForRatio(ratio) {
+    var maxW = innerWidth * 0.92, maxH = innerHeight * 0.86;
+    var w = Math.min(maxW, maxH * ratio), h = w / ratio;
+    return { left: (innerWidth - w) / 2, top: (innerHeight - h) / 2, width: w, height: h };
+  }
+  function place(el, r) {
+    Object.assign(el.style, { left: r.left + 'px', top: r.top + 'px', width: r.width + 'px', height: r.height + 'px' });
+  }
+  /* Blättern zwischen mehreren Bildern (data-bilder="a.jpg|b.jpg") */
+  function show(i) {
+    var o = open; if (!o || !o.list) return;
+    o.index = (i + o.list.length) % o.list.length;
+    var img = o.clone.querySelector(':scope > img');
+    var pre = new Image();
+    pre.onload = function () {
+      if (open !== o) return;
+      img.src = pre.src;
+      place(o.clone, rectForRatio(pre.naturalWidth / pre.naturalHeight));
+      o.counter.textContent = (o.index + 1) + ' / ' + o.list.length;
+      if (!reduce) img.animate([{ opacity: .3 }, { opacity: 1 }], { duration: 200 });
+    };
+    pre.src = o.list[o.index];
+  }
+  function navButton(cls, label, text, dir) {
+    var b = document.createElement('button');
+    b.className = 'zoom-nav ' + cls; b.type = 'button'; b.setAttribute('aria-label', label); b.textContent = text;
+    b.addEventListener('click', function (e) { e.stopPropagation(); show(open.index + dir); });
+    return b;
+  }
+
+  /* Vorschaubild zu Index i: bei zwei Fotos nebeneinander das jeweilige, sonst das einzige */
+  function thumbImg(fig, i) {
+    return fig.querySelector('.ref-pair img[data-index="' + (i || 0) + '"]') || fig.querySelector(':scope > img');
+  }
+  function targetRect(fig, i) {
+    var r = fig.getBoundingClientRect();
+    var img = thumbImg(fig, i);
+    var ratio = (img && img.naturalWidth) ? img.naturalWidth / img.naturalHeight : r.width / r.height;
+    var maxW = innerWidth * 0.92, maxH = innerHeight * 0.86;
+    var w = Math.min(maxW, maxH * ratio), h = w / ratio;
+    return { left: (innerWidth - w) / 2, top: (innerHeight - h) / 2, width: w, height: h };
+  }
+  function fromTransform(from, to) {
+    var s = from.width / to.width;
+    return 'translate(' + (from.left - to.left) + 'px,' + (from.top - to.top) + 'px) scale(' + s + ',' + (from.height / to.height) + ')';
+  }
+
+  function zoomIn(fig, idx) {
+    if (open) return;
+    idx = idx || 0;
+    var pairImg = fig.querySelector('.ref-pair img[data-index="' + idx + '"]');
+    var from = (pairImg || fig).getBoundingClientRect(), to = targetRect(fig, idx);
+
+    var overlay = document.createElement('div');
+    overlay.className = 'zoom-overlay';
+    var btn = document.createElement('button');
+    btn.className = 'zoom-close'; btn.type = 'button'; btn.setAttribute('aria-label', 'Schließen'); btn.textContent = '✕';
+
+    var clone = fig.cloneNode(true);
+    clone.removeAttribute('tabindex'); clone.removeAttribute('role'); clone.removeAttribute('data-zoom');
+    clone.className += ' zoom-clone';
+    clone.setAttribute('role', 'dialog'); clone.setAttribute('aria-modal', 'true');
+    /* zwei Fotos nebeneinander -> im Vollbild nur das angeklickte */
+    var pair = clone.querySelector('.ref-pair');
+    if (pair) {
+      var single = document.createElement('img');
+      single.src = pairImg.src; single.alt = pairImg.alt;
+      pair.replaceWith(single);
+    }
+    Object.assign(clone.style, { left: to.left + 'px', top: to.top + 'px', width: to.width + 'px', height: to.height + 'px' });
+
+    document.body.append(overlay, clone, btn);
+    fig.style.visibility = 'hidden';
+    document.documentElement.classList.add('zoom-open');
+    open = { fig: fig, clone: clone, overlay: overlay, btn: btn, extras: [] };
+
+    var list = fig.getAttribute('data-bilder');
+    if (list) {
+      open.list = list.split('|'); open.index = idx;
+      var counter = document.createElement('div'); counter.className = 'zoom-counter';
+      counter.textContent = (idx + 1) + ' / ' + open.list.length; open.counter = counter;
+      var prev = navButton('zoom-prev', 'Vorheriges Bild', '‹', -1);
+      var next = navButton('zoom-next', 'Nächstes Bild', '›', +1);
+      open.extras = [prev, next, counter];
+      document.body.append(prev, next, counter);
+      if (!reduce) open.extras.forEach(function (el) { el.animate([{ opacity: 0 }, { opacity: 1 }], { duration: DUR, delay: DUR * .6, fill: 'backwards' }); });
+      /* Wischen am Handy */
+      var x0 = null;
+      clone.addEventListener('touchstart', function (e) { x0 = e.touches[0].clientX; }, { passive: true });
+      clone.addEventListener('touchend', function (e) {
+        if (x0 === null) return; var dx = e.changedTouches[0].clientX - x0; x0 = null;
+        if (Math.abs(dx) > 40) { open.swiped = true; show(open.index + (dx < 0 ? 1 : -1)); }
+      });
+    }
+
+    if (!reduce) {
+      clone.animate([{ transform: fromTransform(from, to), borderRadius: '12px' }, { transform: 'none', borderRadius: '8px' }], { duration: DUR, easing: EASE });
+      overlay.animate([{ opacity: 0 }, { opacity: 1 }], { duration: DUR, easing: 'ease-out' });
+      btn.animate([{ opacity: 0 }, { opacity: 1 }], { duration: DUR, delay: DUR * .6, fill: 'backwards' });
+    }
+    btn.focus();
+  }
+
+  function zoomOut() {
+    if (!open) return;
+    var o = open; open = null;
+    o.extras.forEach(function (el) { el.remove(); });
+    /* Zurückzoomen zum passenden Vorschaubild: bei zwei Fotos nebeneinander
+       zum gerade gezeigten, sonst zum ersten */
+    var backEl = o.fig;
+    if (o.list) {
+      var pairImg = o.fig.querySelector('.ref-pair img[data-index="' + o.index + '"]');
+      if (pairImg) backEl = pairImg;
+      else {
+        var i0 = o.fig.querySelector('.ref-pair') ? 0 : null;
+        o.clone.querySelector(':scope > img').src = o.list[0];
+        place(o.clone, targetRect(o.fig, 0));
+        if (i0 === 0) backEl = o.fig.querySelector('.ref-pair img[data-index="0"]');
+      }
+    }
+    function done() {
+      o.overlay.remove(); o.clone.remove(); o.btn.remove();
+      o.fig.style.visibility = '';
+      document.documentElement.classList.remove('zoom-open');
+      o.fig.focus({ preventScroll: true });
+    }
+    if (reduce) return done();
+    var to = o.clone.getBoundingClientRect(), from = backEl.getBoundingClientRect();
+    o.btn.remove();
+    o.overlay.animate([{ opacity: 1 }, { opacity: 0 }], { duration: DUR, easing: 'ease-in', fill: 'forwards' });
+    o.clone.animate([{ transform: 'none' }, { transform: fromTransform(from, to), borderRadius: '12px' }], { duration: DUR, easing: EASE, fill: 'forwards' })
+      .finished.then(done, done);
+  }
+
+  document.addEventListener('click', function (e) {
+    if (open) {
+      if (open.swiped) { open.swiped = false; return; }   /* Wischen ist kein Schließen */
+      if (e.target.closest('.zoom-overlay, .zoom-clone, .zoom-close')) zoomOut();
+      return;
+    }
+    var fig = e.target.closest('[data-zoom]');
+    if (fig) zoomIn(fig, +(e.target.getAttribute('data-index') || 0));  /* angeklicktes Foto */
+  });
+  document.addEventListener('keydown', function (e) {
+    if (open && e.key === 'Escape') { zoomOut(); return; }
+    if (open && open.list && e.key === 'ArrowRight') { show(open.index + 1); return; }
+    if (open && open.list && e.key === 'ArrowLeft') { show(open.index - 1); return; }
+    var fig = !open && e.target.closest && e.target.closest('[data-zoom]');
+    if (fig && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); zoomIn(fig); }
+  });
+  window.addEventListener('resize', function () { if (open) zoomOut(); });
+})();
+</script>
+<script>
+/* Vorschau-Raster: Kachel-Seitenverhältnis an die Fotos anpassen, damit sie
+   ohne Rand und (fast) unbeschnitten bündig nebeneinander stehen.
+   Jede Zelle bekommt die Breite ihres Fotos (flex-grow = Seitenverhältnis). */
+(function () {
+  var MIN = 1.2, MAX = 2.0;   /* Kachel nie zu hoch oder zu flach */
+  document.querySelectorAll('.ref-img.has-photo').forEach(function (fig) {
+    var imgs = fig.querySelectorAll('.ref-cell img');
+    function fit() {
+      var sum = 0;
+      for (var k = 0; k < imgs.length; k++) {
+        if (!imgs[k].naturalWidth) return;           /* noch nicht geladen */
+        var r = imgs[k].naturalWidth / imgs[k].naturalHeight;
+        imgs[k].parentNode.style.flexGrow = r; sum += r;
+      }
+      fig.style.aspectRatio = Math.min(MAX, Math.max(MIN, sum));
+    }
+    imgs.forEach(function (im) { im.loading = 'eager'; if (im.complete) fit(); else im.addEventListener('load', fit); });
+    fit();
+  });
+})();
+</script>

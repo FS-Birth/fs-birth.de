@@ -1,0 +1,43 @@
+---
+layout: page
+title: Kontakt
+heading: Die Crew
+permalink: /kontakt/
+---
+{%- comment -%} Eine Karte pro Person – Inhalte und Erklärung in _data/team.yml {%- endcomment -%}
+{%- for p in site.data.team -%}
+{%- if p.telefon == nil -%}{%- assign tel = site.tel -%}{%- else -%}{%- assign tel = p.telefon -%}{%- endif -%}
+{%- if p.email == nil -%}{%- assign mail = site.email -%}{%- else -%}{%- assign mail = p.email -%}{%- endif -%}
+<div class="contact card">
+  <div class="contact-text">
+    {%- if p.position -%}<h2 class="crew-rolle">{{ p.position | escape }}</h2>{%- endif -%}
+    <p>
+      <strong>{{ p.name | escape }}</strong>
+      {%- if p.aufgaben -%}<br>{{ p.aufgaben | join: " · " | escape }}{%- endif -%}
+    </p>
+
+    <p>
+      Telefon: {% if tel != "" %}<a href="tel:{{ tel | remove: " " }}">{{ tel }}</a>{% endif %}<br>
+      E-Mail: {% if mail != "" %}<a href="mailto:{{ mail }}">{{ mail }}</a>{% endif %}
+      {%- if p.adresse -%}<br>Büro: {{ site.address }}{%- endif -%}
+    </p>
+
+    {%- if p.buttons -%}
+    {%- include socials.html labels=true -%}
+
+    <p class="contact-buttons">
+      <button type="button" class="btn" data-anfrage="Allgemeine Anfrage">Anfrage stellen</button>
+    </p>
+
+    <p class="small"><a href="{{ "/impressum/" | relative_url }}">Impressum</a> · <a href="{{ "/datenschutz/" | relative_url }}">Datenschutz</a></p>
+    {%- endif -%}
+  </div>
+  <div class="portrait">
+    {%- if p.bild -%}
+      <img src="{{ p.bild | relative_url }}" alt="{{ p.name | escape }}">
+    {%- else -%}
+      <span aria-hidden="true">{{ p.name | slice: 0 }}</span>
+    {%- endif -%}
+  </div>
+</div>
+{%- endfor -%}
