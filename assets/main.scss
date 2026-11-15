@@ -200,7 +200,7 @@ section { margin-bottom: 48px; }
 .section-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 16px; }
 .section-head h2 { margin: 0; }
 
-.live { border-left: 6px solid var(--gelb); }
+.live { border-left: 6px solid var(--gelb); margin-bottom: 20px; }
 .live p:last-child { margin-bottom: 0; }
 .card--live { border-left-color: var(--rot); }
 .live-badge { display: inline-block; color: #fff; background: var(--rot); font-weight: 800; font-size: .8rem; padding: 2px 10px; border-radius: 999px; margin-bottom: 8px; }

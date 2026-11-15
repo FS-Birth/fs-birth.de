@@ -44,12 +44,17 @@ title: Home
   </div>
 </section>
 
-<!-- 3  Socials + Live/Ankündigung -->
+<!-- 3  Socials -->
 <section class="social-section">
   <div class="section-head">
     <h2>Socials</h2>
     {%- include socials.html labels=true -%}
   </div>
+</section>
+
+<!-- 4  Aktuelles (Live/Ankündigung + Beiträge) -->
+<section class="news">
+  <h2>Aktuelles</h2>
 
   {%- if a.live and a.live_url != "" -%}
   <div class="live card card--live">
@@ -64,11 +69,7 @@ title: Home
     <p>{{ a.ankuendigung_text }}</p>
   </div>
   {%- endif -%}
-</section>
 
-<!-- 4  Aktuelles -->
-<section class="news">
-  <h2>Aktuelles</h2>
   <div class="news-grid">
     {%- for post in site.posts limit: 3 -%}
     <a class="news-item card" href="{{ post.url | relative_url }}">
