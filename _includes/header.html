@@ -1,8 +1,20 @@
 {%- assign nav = "Home|/,Leistungen|/leistungen/,Galerie|/galerie/,Kontakt|/kontakt/" | split: "," -%}
+<script>
+  /* Einfahrt-Animation nur beim ersten Seitenaufruf pro Browser-Sitzung */
+  (function () {
+    var h = document.documentElement;
+    try {
+      if (sessionStorage.getItem('fsb-intro')) return;
+      sessionStorage.setItem('fsb-intro', '1');
+    } catch (e) {}
+    h.classList.add('intro');
+  })();
+</script>
 <header class="site-header">
+  <div class="road" aria-hidden="true"></div>
   <div class="wrapper header-inner">
-    <a class="site-brand" href="{{ "/" | relative_url }}">
-      <img src="{{ "/bilder/fsb-icon_oo.png" | relative_url }}" alt="" width="64" height="48">
+    <a class="site-brand" href="{{ "/" | relative_url }}" aria-label="FS-Birth – Startseite">
+      <img class="car" src="{{ "/bilder/fsb-icon_oo.png" | relative_url }}" alt="" width="76" height="57">
       <span>FS-Birth<small>Fahrender Schlosser</small></span>
     </a>
 
