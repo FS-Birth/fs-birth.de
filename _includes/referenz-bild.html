@@ -10,8 +10,17 @@
   {%- if include.zoom %} data-zoom tabindex="0" role="button" aria-label="{% if r %}{{ r.titel | escape }} – {% endif %}Bild vergrößern"{% endif -%}
   {%- if imgs.size > 1 %} data-bilder="{% for i in imgs %}{{ i | relative_url }}{% unless forloop.last %}|{% endunless %}{% endfor %}"{% endif %}>
   {%- if imgs.size > 0 -%}
-    <img src="{{ imgs[0] | relative_url }}" alt="{{ r.titel | escape }}" loading="lazy">
-    {%- if imgs.size > 1 %}<span class="ref-count">{{ imgs.size }} Fotos</span>{% endif -%}
+    {%- if imgs.size > 1 -%}
+      {%- comment -%} Mehrere Fotos: die ersten zwei nebeneinander {%- endcomment -%}
+      <div class="ref-pair">
+        {%- for i in imgs limit: 2 -%}
+        <img src="{{ i | relative_url }}" alt="{{ r.titel | escape }} – Foto {{ forloop.index }}" loading="lazy" data-index="{{ forloop.index0 }}">
+        {%- endfor -%}
+      </div>
+      {%- if imgs.size > 2 %}<span class="ref-count">{{ imgs.size }} Fotos</span>{% endif -%}
+    {%- else -%}
+      <img src="{{ imgs[0] | relative_url }}" alt="{{ r.titel | escape }}" loading="lazy">
+    {%- endif -%}
   {%- else -%}
     <div class="ref-placeholder" aria-hidden="true">
       <img src="{{ "/bilder/fsb-icon_oo.png" | relative_url }}" alt="">

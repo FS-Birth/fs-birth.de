@@ -39,9 +39,13 @@
     return b;
   }
 
-  function targetRect(fig) {
+  /* Vorschaubild zu Index i: bei zwei Fotos nebeneinander das jeweilige, sonst das einzige */
+  function thumbImg(fig, i) {
+    return fig.querySelector('.ref-pair img[data-index="' + (i || 0) + '"]') || fig.querySelector(':scope > img');
+  }
+  function targetRect(fig, i) {
     var r = fig.getBoundingClientRect();
-    var img = fig.querySelector(':scope > img');
+    var img = thumbImg(fig, i);
     var ratio = (img && img.naturalWidth) ? img.naturalWidth / img.naturalHeight : r.width / r.height;
     var maxW = innerWidth * 0.92, maxH = innerHeight * 0.86;
     var w = Math.min(maxW, maxH * ratio), h = w / ratio;
@@ -52,9 +56,11 @@
     return 'translate(' + (from.left - to.left) + 'px,' + (from.top - to.top) + 'px) scale(' + s + ',' + (from.height / to.height) + ')';
   }
 
-  function zoomIn(fig) {
+  function zoomIn(fig, idx) {
     if (open) return;
-    var from = fig.getBoundingClientRect(), to = targetRect(fig);
+    idx = idx || 0;
+    var pairImg = fig.querySelector('.ref-pair img[data-index="' + idx + '"]');
+    var from = (pairImg || fig).getBoundingClientRect(), to = targetRect(fig, idx);
 
     var overlay = document.createElement('div');
     overlay.className = 'zoom-overlay';
@@ -65,6 +71,13 @@
     clone.removeAttribute('tabindex'); clone.removeAttribute('role'); clone.removeAttribute('data-zoom');
     clone.className += ' zoom-clone';
     clone.setAttribute('role', 'dialog'); clone.setAttribute('aria-modal', 'true');
+    /* zwei Fotos nebeneinander -> im Vollbild nur das angeklickte */
+    var pair = clone.querySelector('.ref-pair');
+    if (pair) {
+      var single = document.createElement('img');
+      single.src = pairImg.src; single.alt = pairImg.alt;
+      pair.replaceWith(single);
+    }
     Object.assign(clone.style, { left: to.left + 'px', top: to.top + 'px', width: to.width + 'px', height: to.height + 'px' });
 
     document.body.append(overlay, clone, btn);
@@ -74,9 +87,9 @@
 
     var list = fig.getAttribute('data-bilder');
     if (list) {
-      open.list = list.split('|'); open.index = 0;
+      open.list = list.split('|'); open.index = idx;
       var counter = document.createElement('div'); counter.className = 'zoom-counter';
-      counter.textContent = '1 / ' + open.list.length; open.counter = counter;
+      counter.textContent = (idx + 1) + ' / ' + open.list.length; open.counter = counter;
       var prev = navButton('zoom-prev', 'Vorheriges Bild', '‹', -1);
       var next = navButton('zoom-next', 'Nächstes Bild', '›', +1);
       open.extras = [prev, next, counter];
@@ -103,10 +116,18 @@
     if (!open) return;
     var o = open; open = null;
     o.extras.forEach(function (el) { el.remove(); });
-    /* zurück zum Vorschaubild, damit das Zurückzoomen zum Original passt */
-    if (o.list && o.index !== 0) {
-      o.clone.querySelector(':scope > img').src = o.list[0];
-      place(o.clone, targetRect(o.fig));
+    /* Zurückzoomen zum passenden Vorschaubild: bei zwei Fotos nebeneinander
+       zum gerade gezeigten, sonst zum ersten */
+    var backEl = o.fig;
+    if (o.list) {
+      var pairImg = o.fig.querySelector('.ref-pair img[data-index="' + o.index + '"]');
+      if (pairImg) backEl = pairImg;
+      else {
+        var i0 = o.fig.querySelector('.ref-pair') ? 0 : null;
+        o.clone.querySelector(':scope > img').src = o.list[0];
+        place(o.clone, targetRect(o.fig, 0));
+        if (i0 === 0) backEl = o.fig.querySelector('.ref-pair img[data-index="0"]');
+      }
     }
     function done() {
       o.overlay.remove(); o.clone.remove(); o.btn.remove();
@@ -115,7 +136,7 @@
       o.fig.focus({ preventScroll: true });
     }
     if (reduce) return done();
-    var to = o.clone.getBoundingClientRect(), from = o.fig.getBoundingClientRect();
+    var to = o.clone.getBoundingClientRect(), from = backEl.getBoundingClientRect();
     o.btn.remove();
     o.overlay.animate([{ opacity: 1 }, { opacity: 0 }], { duration: DUR, easing: 'ease-in', fill: 'forwards' });
     o.clone.animate([{ transform: 'none' }, { transform: fromTransform(from, to), borderRadius: '12px' }], { duration: DUR, easing: EASE, fill: 'forwards' })
@@ -129,7 +150,7 @@
       return;
     }
     var fig = e.target.closest('[data-zoom]');
-    if (fig) zoomIn(fig);
+    if (fig) zoomIn(fig, +(e.target.getAttribute('data-index') || 0));  /* angeklicktes Foto */
   });
   document.addEventListener('keydown', function (e) {
     if (open && e.key === 'Escape') { zoomOut(); return; }
