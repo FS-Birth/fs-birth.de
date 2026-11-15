@@ -41,3 +41,27 @@
     </nav>
   </div>
 </header>
+<script>
+  /* Mittellinien-Striche, die der Schriftzug berührt, komplett abdecken
+     (statt Strich-Stummel links/rechts). Muster muss zu .road in main.scss passen:
+     30px Strich, 36px Lücke, beginnt am linken Rand. */
+  (function () {
+    var DASH = 30, PERIOD = 66, PAD = 6;
+    var text = document.querySelector('.site-brand .brand-text');
+    var road = document.querySelector('.site-header .road');
+    if (!text || !road) return;
+    function update() {
+      var t = text.getBoundingClientRect(), r = road.getBoundingClientRect();
+      var a = t.left - r.left, b = t.right - r.left;
+      var L = a - PAD, R = b + PAD;
+      var mL = ((L % PERIOD) + PERIOD) % PERIOD, mR = ((R % PERIOD) + PERIOD) % PERIOD;
+      if (mL < DASH) L -= mL + 1;            /* links: bis Strichanfang */
+      if (mR < DASH) R += DASH - mR + 1;     /* rechts: bis Strichende */
+      text.style.setProperty('--cover-l', (L - a) + 'px');
+      text.style.setProperty('--cover-r', (b - R) + 'px');
+    }
+    update();
+    window.addEventListener('resize', update);
+    if (document.fonts) document.fonts.ready.then(update);
+  })();
+</script>
