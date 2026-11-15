@@ -119,11 +119,23 @@
         if (!r.ok || r.j.success === false || r.j.success === 'false') throw new Error(r.j.message || 'Fehler');
         felder.hidden = true; danke.hidden = false;
       })
-      .catch(function () {
+      .catch(function (err) {
         senden.disabled = false; senden.textContent = 'Erneut senden';
         status.className = 'anfrage-status anfrage-status--fehler';
+        var msg = (err && err.message) || '';
+        /* FormSubmit beim ersten Mal: Formular muss per Bestätigungsmail freigeschaltet werden */
+        if (/activat/i.test(msg)) {
+          status.innerHTML = 'Das Formular ist noch nicht freigeschaltet: Bitte den Link in der Bestätigungsmail von FormSubmit an ' +
+            MAIL + ' anklicken. Bis dahin kannst du <a href="' + mailtoLink(d) + '">die Anfrage per E-Mail schicken</a>.';
+          return;
+        }
         status.innerHTML = 'Das Senden hat leider nicht geklappt. Du kannst es erneut versuchen oder ' +
           '<a href="' + mailtoLink(d) + '">die Anfrage per E-Mail schicken</a>.';
+        /* Originalmeldung des Dienstes klein dazuschreiben (hilft bei der Fehlersuche) */
+        if (msg && msg !== 'Fehler' && !/fetch|network/i.test(msg)) {
+          var small = document.createElement('small'); small.textContent = ' (Meldung: ' + msg + ')';
+          status.appendChild(small);
+        }
       });
   });
 })();
