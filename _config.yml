@@ -60,7 +60,7 @@ plugins:
 # ---------------------------------------------------------------
 # Leer lassen ("") = Button/Icon wird nicht angezeigt.
 whatsapp_number: ""      # internationale Schreibweise ohne + und Leerzeichen, z. B. "4917612345678"
-youtube_url: ""          # z. B. "https://www.youtube.com/@fs-birth"
+youtube_url: "https://www.youtube.com/@FSBirth" # z. B. "https://www.youtube.com/@fs-birth"
 address: "Netzestraße 11, 22547 Hamburg"
 portrait: ""             # z. B. "/bilder/portrait.jpg" – leer = Platzhalter
 

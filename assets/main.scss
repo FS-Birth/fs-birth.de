@@ -163,6 +163,7 @@ p { margin: 0 0 1em; }
 .socials--labels .social { padding: 8px 16px 8px 10px; background: var(--card); }
 .social svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linejoin: round; }
 .social svg .fill { fill: currentColor; stroke: none; }
+.social svg.logo-yt, .social svg.logo-yt path { stroke: none; }
 .social--ig:hover { border-color: #d62976; color: #d62976; }
 .social--wa:hover { border-color: #25d366; color: #128c7e; }
 .social--yt:hover { border-color: #ff0000; color: #ff0000; }
