@@ -479,3 +479,43 @@ section { margin-bottom: 48px; }
   .contact .portrait { width: 160px; grid-row: 1; }
   .gallery-text { padding: 0; }
 }
+
+/* ---------- Vollbild-Zoom (zoom.html) ---------- */
+.ref-img[data-zoom] { cursor: zoom-in; }
+.ref-img[data-zoom] > img,
+.ref-img[data-zoom] .ref-placeholder { transition: transform .3s ease; }
+.ref-img[data-zoom]:hover > img,
+.ref-img[data-zoom]:hover .ref-placeholder { transform: scale(1.03); }
+.ref-img[data-zoom]::after {           /* Lupe oben rechts */
+  content: "⤢";
+  position: absolute; top: 8px; right: 8px;
+  width: 30px; height: 30px;
+  display: grid; place-items: center;
+  border-radius: 50%;
+  background: rgba(0,0,0,.55); color: #fff; font-size: 16px;
+  opacity: 0; transition: opacity .2s;
+}
+.ref-img[data-zoom]:hover::after, .ref-img[data-zoom]:focus-visible::after { opacity: 1; }
+@media (hover: none) { .ref-img[data-zoom]::after { opacity: .8; } }
+
+.zoom-open, .zoom-open body { overflow: hidden; }
+.zoom-overlay { position: fixed; inset: 0; z-index: 100; background: rgba(20,20,22,.9); cursor: zoom-out; }
+.zoom-clone {
+  position: fixed; z-index: 101; margin: 0;
+  aspect-ratio: auto;
+  border-radius: 8px;
+  transform-origin: 0 0;
+  box-shadow: 0 20px 60px rgba(0,0,0,.5);
+  cursor: zoom-out;
+}
+.zoom-clone::after { display: none; }
+.zoom-clone figcaption { font-size: 1.1rem; padding: 40px 20px 16px; }
+.zoom-clone .ref-placeholder span { display: inline !important; font-size: 1rem; }
+.zoom-clone .ref-placeholder img { margin-bottom: 0 !important; }
+.zoom-close {
+  position: fixed; z-index: 102; top: 16px; right: 16px;
+  width: 44px; height: 44px; border-radius: 50%;
+  border: 0; background: rgba(255,255,255,.15); color: #fff;
+  font-size: 20px; cursor: pointer;
+}
+.zoom-close:hover { background: rgba(255,255,255,.3); }

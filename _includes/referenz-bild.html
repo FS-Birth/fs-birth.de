@@ -1,5 +1,8 @@
+{%- comment -%}
+  Referenzbild. Mit zoom=true ist es anklickbar und zoomt auf Vollbild (zoom.html).
+{%- endcomment -%}
 {%- assign r = include.ref -%}
-<figure class="ref-img">
+<figure class="ref-img"{% if include.zoom %} data-zoom tabindex="0" role="button" aria-label="{% if r %}{{ r.titel | escape }} – {% endif %}Bild vergrößern"{% endif %}>
   {%- if r and r.bild and r.bild != "" -%}
     <img src="{{ r.bild | relative_url }}" alt="{{ r.titel | escape }}" loading="lazy">
   {%- else -%}

@@ -47,10 +47,10 @@ title: Home
 
   <div class="hero-refs">
     {%- for r in start_refs limit: 2 -%}
-      {%- include referenz-bild.html ref=r -%}
+      {%- include referenz-bild.html ref=r zoom=true -%}
     {%- else -%}
-      {%- include referenz-bild.html -%}
-      {%- include referenz-bild.html -%}
+      {%- include referenz-bild.html zoom=true -%}
+      {%- include referenz-bild.html zoom=true -%}
     {%- endfor -%}
   </div>
 </section>
