@@ -482,9 +482,7 @@ section { margin-bottom: 48px; }
 
 /* ---------- Vollbild-Zoom (zoom.html) ---------- */
 .ref-img[data-zoom] { cursor: zoom-in; }
-.ref-img[data-zoom] > img,
 .ref-img[data-zoom] .ref-placeholder { transition: transform .3s ease; }
-.ref-img[data-zoom]:hover > img,
 .ref-img[data-zoom]:hover .ref-placeholder { transform: scale(1.03); }
 .ref-img[data-zoom]::after {           /* Lupe oben rechts */
   content: "⤢";
@@ -545,23 +543,11 @@ section { margin-bottom: 48px; }
   background: rgba(0,0,0,.5); color: #fff; font-size: .9rem;
 }
 
-/* Vorschau zeigt das ganze Foto (nicht beschnitten); der freie Rand wird
-   mit einer unscharfen, abgedunkelten Version desselben Fotos gefüllt. */
-.ref-img.has-photo::before {
-  content: "";
-  position: absolute; inset: -24px;
-  background: var(--bg) center / cover;
-  filter: blur(18px) brightness(.65);
-}
-.ref-img.has-photo > img { position: relative; object-fit: contain; }
-
-/* Zwei Fotos nebeneinander in der Vorschau (ganz sichtbar, mittig) */
-.ref-pair {
-  position: relative;
-  display: flex; justify-content: center; align-items: center;
-  gap: 4px;
-  height: 100%;
-  transition: transform .3s ease;
-}
-.ref-pair img { height: 100%; width: auto; min-width: 0; max-width: calc(50% - 2px); object-fit: contain; display: block; }
-.ref-img[data-zoom]:hover .ref-pair { transform: scale(1.03); }
+/* Vorschau: Fotos als Raster ohne Rand. Das Skript in zoom.html setzt das
+   Seitenverhältnis der Kachel passend zu den Fotos (begrenzt auf 1.2–2.0),
+   damit sie (fast) unbeschnitten bündig nebeneinander stehen. */
+.ref-pair { display: flex; height: 100%; }
+.ref-cell { flex: 1 1 0; min-width: 0; overflow: hidden; }
+.ref-cell img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .35s ease; }
+/* Hover: das Foto unter der Maus wird etwas größer */
+.ref-img[data-zoom] .ref-cell:hover img { transform: scale(1.07); }

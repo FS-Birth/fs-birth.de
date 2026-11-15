@@ -162,3 +162,25 @@
   window.addEventListener('resize', function () { if (open) zoomOut(); });
 })();
 </script>
+<script>
+/* Vorschau-Raster: Kachel-Seitenverhältnis an die Fotos anpassen, damit sie
+   ohne Rand und (fast) unbeschnitten bündig nebeneinander stehen.
+   Jede Zelle bekommt die Breite ihres Fotos (flex-grow = Seitenverhältnis). */
+(function () {
+  var MIN = 1.2, MAX = 2.0;   /* Kachel nie zu hoch oder zu flach */
+  document.querySelectorAll('.ref-img.has-photo').forEach(function (fig) {
+    var imgs = fig.querySelectorAll('.ref-cell img');
+    function fit() {
+      var sum = 0;
+      for (var k = 0; k < imgs.length; k++) {
+        if (!imgs[k].naturalWidth) return;           /* noch nicht geladen */
+        var r = imgs[k].naturalWidth / imgs[k].naturalHeight;
+        imgs[k].parentNode.style.flexGrow = r; sum += r;
+      }
+      fig.style.aspectRatio = Math.min(MAX, Math.max(MIN, sum));
+    }
+    imgs.forEach(function (im) { im.loading = 'eager'; if (im.complete) fit(); else im.addEventListener('load', fit); });
+    fit();
+  });
+})();
+</script>
