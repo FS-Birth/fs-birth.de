@@ -44,9 +44,9 @@
 <script>
   /* Mittellinien-Striche, die der Schriftzug berührt, komplett abdecken
      (statt Strich-Stummel links/rechts). Muster muss zu .road in main.scss passen:
-     30px Strich, 36px Lücke, um OFFSET px verschoben (-5 = 5px nach links). */
+     30px Strich, 36px Lücke, um OFFSET px verschoben (-15 = 15px nach links). */
   (function () {
-    var DASH = 30, PERIOD = 66, PAD = 6, OFFSET = -5;
+    var DASH = 30, PERIOD = 66, PAD = 6, OFFSET = -15;
     var text = document.querySelector('.site-brand .brand-text');
     var road = document.querySelector('.site-header .road');
     if (!text || !road) return;
