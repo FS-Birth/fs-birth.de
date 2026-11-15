@@ -79,7 +79,10 @@ title: Home
     <h3>{{ a.live_titel }}</h3>
     <a class="btn" href="{{ a.live_url }}" target="_blank" rel="noopener">Zum Stream</a>
   </div>
-  {%- elsif a.ankuendigung_titel != "" -%}
+  {%- endif -%}
+
+  {%- comment -%} Ankündigung immer darunter (auch wenn live) {%- endcomment -%}
+  {%- if a.ankuendigung_titel and a.ankuendigung_titel != "" -%}
   <div class="live card">
     <span class="eyebrow">Ankündigung</span>
     <h3>{{ a.ankuendigung_titel }}</h3>
