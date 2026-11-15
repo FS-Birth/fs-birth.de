@@ -5,7 +5,7 @@ permalink: /kontakt/
 ---
 <div class="contact card">
   <div class="contact-text">
-    <p><strong>Sebastian Birth</strong><br>Fahrender Schlosser Birth</p>
+    <p><strong>Fahrender Schlosser Birth</strong></p>
     <p>
       Telefon: <a href="tel:{{ site.tel | remove: " " }}">{{ site.tel }}</a><br>
       E-Mail: <a href="mailto:{{ site.email }}">{{ site.email }}</a><br>
@@ -20,5 +20,27 @@ permalink: /kontakt/
 
     <p class="small"><a href="{{ "/impressum/" | relative_url }}">Impressum</a> · <a href="{{ "/datenschutz/" | relative_url }}">Datenschutz</a></p>
   </div>
-  {%- include portrait.html -%}
+</div>
+
+{%- comment -%} Team – Inhalte in _data/team.yml {%- endcomment -%}
+<h2 class="team-title">Die Crew</h2>
+<div class="team">
+  {%- for p in site.data.team -%}
+  <div class="team-card card">
+    <div class="portrait">
+      {%- if p.bild -%}
+        <img src="{{ p.bild | relative_url }}" alt="{{ p.name | escape }}">
+      {%- else -%}
+        <span aria-hidden="true">{{ p.name | slice: 0 }}</span>
+      {%- endif -%}
+    </div>
+    <div class="team-text">
+      {%- if p.position -%}<span class="tag">{{ p.position | escape }}</span>{%- endif -%}
+      <h3>{{ p.name | escape }}</h3>
+      {%- if p.aufgaben -%}
+      <p class="team-aufgaben"><span>Aufgaben:</span> {{ p.aufgaben | join: " · " | escape }}</p>
+      {%- endif -%}
+    </div>
+  </div>
+  {%- endfor -%}
 </div>

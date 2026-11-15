@@ -1,0 +1,13 @@
+# Team auf der Kontaktseite – Reihenfolge = Reihenfolge auf der Seite.
+# bild: Pfad zum Foto (quadratisch wirkt am besten)
+# aufgaben: Liste, darf auch fehlen
+- name: Sebastian Birth
+  position: Captain
+  bild: /bilder/portrait.jpg
+
+- name: Mystery dude
+  position: First Mate
+  bild: /bilder/team/mystery-dude.svg
+  aufgaben:
+    - Marketing
+    - Montage
