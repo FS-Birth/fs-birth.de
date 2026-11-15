@@ -17,9 +17,10 @@ permalink: /kontakt/
 
     {%- if p.kontakt -%}
     <p>
-      Telefon: <a href="tel:{{ site.tel | remove: " " }}">{{ site.tel }}</a><br>
-      E-Mail: <a href="mailto:{{ site.email }}">{{ site.email }}</a><br>
-      Werkstatt / Büro: {{ site.address }}
+      {%- assign tel = p.telefon | default: site.tel -%}{%- assign mail = p.email | default: site.email %}
+      Telefon: <a href="tel:{{ tel | remove: " " }}">{{ tel }}</a><br>
+      E-Mail: <a href="mailto:{{ mail }}">{{ mail }}</a><br>
+      Büro: {{ site.address }}
     </p>
 
     {%- include socials.html labels=true -%}

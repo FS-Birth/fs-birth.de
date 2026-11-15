@@ -1,7 +1,8 @@
 # Crew auf der Kontaktseite – Reihenfolge = Reihenfolge auf der Seite.
 # position: Überschrift der Karte (z. B. Captain)
 # bild:     Foto (quadratisch wirkt am besten)
-# kontakt:  true = Firmenkontakt (Telefon, E-Mail, Adresse, Socials, Anfrage) in dieser Karte
+# kontakt:  true = Kontaktblock (Telefon, E-Mail, Büro, Socials, Anfrage) in dieser Karte
+# telefon / email: optional eigene Kontaktdaten – ohne Angabe gelten die der Firma
 # aufgaben: Liste, darf auch fehlen
 - name: Sebastian Birth
   position: Captain
@@ -11,6 +12,7 @@
 - name: Mystery dude
   position: First Mate
   bild: /bilder/team/mystery-dude.svg
+  kontakt: true
   aufgaben:
     - Marketing
     - Montage

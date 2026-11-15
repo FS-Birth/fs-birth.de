@@ -610,6 +610,6 @@ section { margin-bottom: 48px; }
 
 /* ---------- Team (Kontaktseite, _data/team.yml) ---------- */
 .contact + .contact { margin-top: 20px; }   /* mehrere Crew-Karten untereinander */
-.team-aufgaben { margin: 0; color: var(--text-2); font-size: .95rem; }
+.team-aufgaben { margin: 0 0 1em; }
 .team-aufgaben span { font-weight: 600; color: var(--text); }
 .crew-rolle { margin: 0 0 6px; font-size: 1.4rem; }
