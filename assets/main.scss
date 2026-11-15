@@ -134,7 +134,7 @@ p { margin: 0 0 1em; }
 .site-brand .brand-text {
   position: relative;
   z-index: 1;                /* eigene Ebene: Abdeckung (::before) liegt hinter der Schrift, aber über der Straße */
-  margin-top: 15px;          /* Unterkante bei 15 + 37 = 52px, Mittellinie (47–49px) liegt 3px über der Unterkante */
+  margin-top: 13px;          /* Unterkante bei 13 + 37 = 50px, Mittellinie (47–49px) liegt 1px über der Unterkante */
   color: #fff;
   /* schwarze Outline (8 Richtungen) + weicher Schatten */
   text-shadow:
@@ -148,7 +148,7 @@ p { margin: 0 0 1em; }
   content: "";
   position: absolute;
   z-index: -1;
-  top: 32px;                 /* Linie 47px − 15px Oberkante */
+  top: 34px;                 /* Linie 47px − 13px Oberkante */
   height: 2px;
   left: var(--cover-l, -6px);
   right: var(--cover-r, -6px);
