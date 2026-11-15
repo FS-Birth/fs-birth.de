@@ -469,6 +469,11 @@ section { margin-bottom: 48px; }
 /* ---------- Mobil ---------- */
 @media (max-width: 800px) {
   .hero, .gallery-item, .contact { grid-template-columns: 1fr; }
+  /* Referenzbilder rutschen unter den Text -> dort nebeneinander */
+  .hero-refs { grid-template-columns: 1fr 1fr; gap: 12px; }
+  .hero-refs .ref-img figcaption { font-size: .85rem; padding: 18px 10px 8px; }
+  .hero-refs .ref-placeholder span { display: none; } /* kollidiert sonst mit der Bildunterschrift */
+  .hero-refs .ref-placeholder img { margin-bottom: 18px; }
   .about { grid-template-columns: 1fr; text-align: center; justify-items: center; }
   .service { grid-template-columns: 1fr; gap: 10px; justify-items: start; }
   .contact .portrait { width: 160px; grid-row: 1; }
