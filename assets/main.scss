@@ -181,8 +181,17 @@ p { margin: 0 0 1em; }
 .hero-buttons { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; justify-content: space-between; margin-top: 24px; }
 .hero-cta { display: flex; gap: 12px; flex-wrap: wrap; }
 .hero-buttons .socials { flex-wrap: nowrap; } /* Icons brechen nur gemeinsam um */
+.hero-buttons { container-type: inline-size; }
 .hero-buttons .social { width: 52px; height: 52px; justify-content: center; padding: 0; background: var(--card); }
 .hero-buttons .social svg { width: 26px; height: 26px; }
+.hero-buttons .social span { display: none; }
+
+/* Zu schmal für Buttons + Icons in einer Zeile (~510px):
+   Icons rutschen runter und bekommen ihren Titel dazu. */
+@container (max-width: 540px) {
+  .hero-buttons .social { width: auto; padding: 0 1.1em 0 .8em; font-weight: 700; }
+  .hero-buttons .social span { display: inline; }
+}
 .hero-refs { display: grid; gap: 16px; }
 
 section { margin-bottom: 48px; }
