@@ -130,7 +130,23 @@ p { margin: 0 0 1em; }
 }
 
 .site-brand { display: flex; align-items: flex-start; gap: 12px; color: #fff; text-decoration: none; }
-.site-brand .brand-text { margin-top: 11px; }
+/* Schriftzug in Gelb, schwebt wie die Buttons über der Fahrbahn */
+.site-brand .brand-text {
+  position: relative;
+  margin-top: calc(var(--float-top) + 1px);
+  color: var(--gelb);
+  text-shadow: 0 0 2px #1f2023, 0 0 4px rgba(0,0,0,.8), 0 2px 3px rgba(0,0,0,.6) !important; /* Kontur = lesbar über der Randlinie */
+}
+.site-brand .brand-text::after {
+  content: "";
+  position: absolute;
+  left: 6%; right: 6%;
+  bottom: calc(-1 * var(--float-gap) - 4px);
+  height: 6px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center, rgba(0,0,0,.5), transparent 70%);
+}
+.site-brand:hover .brand-text { color: #ffe36a; }
 /* Auto = Karosserie + 2 Räder; Positionen in % der Originalgrafik (1600×1194).
    Reifenunterkante (~95% der Bildhöhe) steht auf der vorderen Fahrspur. */
 .car {
@@ -209,7 +225,7 @@ p { margin: 0 0 1em; }
   .intro .nav-burger { animation: none; }
 }
 .site-brand .brand-text { font-weight: 800; font-size: 1.25rem; line-height: 1.1; }
-.site-brand small { display: block; font-weight: 500; font-size: .75rem; color: var(--stahl-hell); letter-spacing: .05em; }
+.site-brand small { display: block; font-weight: 600; font-size: .75rem; color: var(--gelb); letter-spacing: .05em; }
 .site-brand:hover { color: #fff; }
 
 /* Navigation schwebt auf Höhe des Autos über der Fahrbahn.
