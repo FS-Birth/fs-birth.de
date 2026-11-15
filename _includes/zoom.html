@@ -9,6 +9,36 @@
   var DUR = 380, EASE = 'cubic-bezier(.2,.8,.2,1)';
   var open = null; // { fig, clone, overlay, btn }
 
+  function rectForRatio(ratio) {
+    var maxW = innerWidth * 0.92, maxH = innerHeight * 0.86;
+    var w = Math.min(maxW, maxH * ratio), h = w / ratio;
+    return { left: (innerWidth - w) / 2, top: (innerHeight - h) / 2, width: w, height: h };
+  }
+  function place(el, r) {
+    Object.assign(el.style, { left: r.left + 'px', top: r.top + 'px', width: r.width + 'px', height: r.height + 'px' });
+  }
+  /* Blättern zwischen mehreren Bildern (data-bilder="a.jpg|b.jpg") */
+  function show(i) {
+    var o = open; if (!o || !o.list) return;
+    o.index = (i + o.list.length) % o.list.length;
+    var img = o.clone.querySelector(':scope > img');
+    var pre = new Image();
+    pre.onload = function () {
+      if (open !== o) return;
+      img.src = pre.src;
+      place(o.clone, rectForRatio(pre.naturalWidth / pre.naturalHeight));
+      o.counter.textContent = (o.index + 1) + ' / ' + o.list.length;
+      if (!reduce) img.animate([{ opacity: .3 }, { opacity: 1 }], { duration: 200 });
+    };
+    pre.src = o.list[o.index];
+  }
+  function navButton(cls, label, text, dir) {
+    var b = document.createElement('button');
+    b.className = 'zoom-nav ' + cls; b.type = 'button'; b.setAttribute('aria-label', label); b.textContent = text;
+    b.addEventListener('click', function (e) { e.stopPropagation(); show(open.index + dir); });
+    return b;
+  }
+
   function targetRect(fig) {
     var r = fig.getBoundingClientRect();
     var img = fig.querySelector(':scope > img');
@@ -40,7 +70,26 @@
     document.body.append(overlay, clone, btn);
     fig.style.visibility = 'hidden';
     document.documentElement.classList.add('zoom-open');
-    open = { fig: fig, clone: clone, overlay: overlay, btn: btn };
+    open = { fig: fig, clone: clone, overlay: overlay, btn: btn, extras: [] };
+
+    var list = fig.getAttribute('data-bilder');
+    if (list) {
+      open.list = list.split('|'); open.index = 0;
+      var counter = document.createElement('div'); counter.className = 'zoom-counter';
+      counter.textContent = '1 / ' + open.list.length; open.counter = counter;
+      var prev = navButton('zoom-prev', 'Vorheriges Bild', '‹', -1);
+      var next = navButton('zoom-next', 'Nächstes Bild', '›', +1);
+      open.extras = [prev, next, counter];
+      document.body.append(prev, next, counter);
+      if (!reduce) open.extras.forEach(function (el) { el.animate([{ opacity: 0 }, { opacity: 1 }], { duration: DUR, delay: DUR * .6, fill: 'backwards' }); });
+      /* Wischen am Handy */
+      var x0 = null;
+      clone.addEventListener('touchstart', function (e) { x0 = e.touches[0].clientX; }, { passive: true });
+      clone.addEventListener('touchend', function (e) {
+        if (x0 === null) return; var dx = e.changedTouches[0].clientX - x0; x0 = null;
+        if (Math.abs(dx) > 40) { open.swiped = true; show(open.index + (dx < 0 ? 1 : -1)); }
+      });
+    }
 
     if (!reduce) {
       clone.animate([{ transform: fromTransform(from, to), borderRadius: '12px' }, { transform: 'none', borderRadius: '8px' }], { duration: DUR, easing: EASE });
@@ -53,6 +102,12 @@
   function zoomOut() {
     if (!open) return;
     var o = open; open = null;
+    o.extras.forEach(function (el) { el.remove(); });
+    /* zurück zum Vorschaubild, damit das Zurückzoomen zum Original passt */
+    if (o.list && o.index !== 0) {
+      o.clone.querySelector(':scope > img').src = o.list[0];
+      place(o.clone, targetRect(o.fig));
+    }
     function done() {
       o.overlay.remove(); o.clone.remove(); o.btn.remove();
       o.fig.style.visibility = '';
@@ -68,12 +123,18 @@
   }
 
   document.addEventListener('click', function (e) {
-    if (open) { if (e.target.closest('.zoom-overlay, .zoom-clone, .zoom-close')) zoomOut(); return; }
+    if (open) {
+      if (open.swiped) { open.swiped = false; return; }   /* Wischen ist kein Schließen */
+      if (e.target.closest('.zoom-overlay, .zoom-clone, .zoom-close')) zoomOut();
+      return;
+    }
     var fig = e.target.closest('[data-zoom]');
     if (fig) zoomIn(fig);
   });
   document.addEventListener('keydown', function (e) {
     if (open && e.key === 'Escape') { zoomOut(); return; }
+    if (open && open.list && e.key === 'ArrowRight') { show(open.index + 1); return; }
+    if (open && open.list && e.key === 'ArrowLeft') { show(open.index - 1); return; }
     var fig = !open && e.target.closest && e.target.closest('[data-zoom]');
     if (fig && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); zoomIn(fig); }
   });

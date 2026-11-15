@@ -1,10 +1,17 @@
 {%- comment -%}
-  Referenzbild. Mit zoom=true ist es anklickbar und zoomt auf Vollbild (zoom.html).
+  Referenzbild. Bilder aus "bilder:" (Liste) oder "bild:" (einzeln).
+  Das erste Bild ist das Vorschaubild. Mit zoom=true ist es anklickbar,
+  zoomt auf Vollbild (zoom.html) und man kann durch alle Bilder blättern.
 {%- endcomment -%}
 {%- assign r = include.ref -%}
-<figure class="ref-img"{% if include.zoom %} data-zoom tabindex="0" role="button" aria-label="{% if r %}{{ r.titel | escape }} – {% endif %}Bild vergrößern"{% endif %}>
-  {%- if r and r.bild and r.bild != "" -%}
-    <img src="{{ r.bild | relative_url }}" alt="{{ r.titel | escape }}" loading="lazy">
+{%- assign imgs = "" | split: "" -%}
+{%- if r.bilder -%}{%- assign imgs = r.bilder -%}{%- elsif r.bild and r.bild != "" -%}{%- assign imgs = r.bild | split: "|" -%}{%- endif -%}
+<figure class="ref-img"
+  {%- if include.zoom %} data-zoom tabindex="0" role="button" aria-label="{% if r %}{{ r.titel | escape }} – {% endif %}Bild vergrößern"{% endif -%}
+  {%- if imgs.size > 1 %} data-bilder="{% for i in imgs %}{{ i | relative_url }}{% unless forloop.last %}|{% endunless %}{% endfor %}"{% endif %}>
+  {%- if imgs.size > 0 -%}
+    <img src="{{ imgs[0] | relative_url }}" alt="{{ r.titel | escape }}" loading="lazy">
+    {%- if imgs.size > 1 %}<span class="ref-count">{{ imgs.size }} Fotos</span>{% endif -%}
   {%- else -%}
     <div class="ref-placeholder" aria-hidden="true">
       <img src="{{ "/bilder/fsb-icon_oo.png" | relative_url }}" alt="">

@@ -14,7 +14,7 @@ permalink: /galerie/
 <div class="gallery">
   {%- for r in refs -%}
   <article class="gallery-item card">
-    {%- include referenz-bild.html ref=r -%}
+    {%- include referenz-bild.html ref=r zoom=true -%}
     <div class="gallery-text">
       <h2>{{ r.titel | escape }}</h2>
       {{ r.content | markdownify }}
