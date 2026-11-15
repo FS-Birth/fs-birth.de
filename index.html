@@ -21,6 +21,24 @@ title: Home
       </div>
       {%- include socials.html labels=true -%}
     </div>
+    <script>
+      /* Icons bekommen ihren Titel, sobald der Browser sie (in der kompakten
+         Form) unter die Buttons umbricht – also genau dann, wenn der Abstand
+         zwischen Buttons und Icons nicht mehr reicht. */
+      (function () {
+        var row = document.querySelector('.hero-buttons');
+        if (!row || !window.ResizeObserver) return;
+        var cta = row.querySelector('.hero-cta');
+        var icons = row.querySelector('.socials');
+        function update() {
+          row.classList.remove('is-wrapped');
+          row.classList.toggle('is-wrapped', icons.offsetTop > cta.offsetTop);
+        }
+        update();
+        new ResizeObserver(update).observe(row);
+        if (document.fonts) document.fonts.ready.then(update);
+      })();
+    </script>
   </div>
 
   <div class="hero-refs">
