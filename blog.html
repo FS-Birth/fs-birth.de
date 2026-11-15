@@ -1,0 +1,39 @@
+---
+layout: page
+title: Blog
+permalink: /blog/
+---
+{%- comment -%}
+  Neuer Beitrag = neue Datei in _posts/ mit Namen JJJJ-MM-TT-titel.markdown
+  und Kopf (Front Matter):
+    ---
+    layout: post
+    title: "Titel des Beitrags"
+    date: 2026-11-20 10:00:00 +0100
+    categories: Werkstatt
+    bild: /bilder/blog/foto.jpg   (optional, Vorschaubild)
+    ---
+{%- endcomment -%}
+
+<p class="lead">Neuigkeiten, Projekte und Einblicke aus der Werkstatt.</p>
+
+<div class="blog-list">
+  {%- for post in site.posts -%}
+  <a class="blog-item card" href="{{ post.url | relative_url }}">
+    {%- if post.bild -%}
+    <span class="blog-thumb"><img src="{{ post.bild | relative_url }}" alt="" loading="lazy"></span>
+    {%- endif -%}
+    <span class="blog-text">
+      <span class="blog-meta">
+        <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%d.%m.%Y" }}</time>
+        {%- for c in post.categories limit: 1 %} · <span class="tag">{{ c | escape }}</span>{% endfor -%}
+      </span>
+      <h2>{{ post.title | escape }}</h2>
+      <p>{{ post.content | strip_html | truncatewords: 40 }}</p>
+      <span class="blog-more">Weiterlesen →</span>
+    </span>
+  </a>
+  {%- else -%}
+  <p>Noch keine Beiträge.</p>
+  {%- endfor -%}
+</div>

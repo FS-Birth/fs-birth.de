@@ -1,4 +1,4 @@
-{%- assign nav = "Home|/,Leistungen|/leistungen/,Galerie|/galerie/,Kontakt|/kontakt/" | split: "," -%}
+{%- assign nav = "Home|/,Leistungen|/leistungen/,Galerie|/galerie/,Blog|/blog/,Kontakt|/kontakt/" | split: "," -%}
 <script>
   /* Einfahrt-Animation nur beim ersten Seitenaufruf pro Browser-Sitzung */
   (function () {
@@ -36,7 +36,10 @@
       {%- for item in nav -%}
         {%- assign parts = item | split: "|" -%}
         {%- assign url = parts[1] -%}
-        <a href="{{ url | relative_url }}"{% if page.url == url %} aria-current="page"{% endif %}>{{ parts[0] }}</a>
+        {%- assign aktiv = false -%}
+        {%- if page.url == url -%}{%- assign aktiv = true -%}{%- endif -%}
+        {%- if url == "/blog/" and page.collection == "posts" -%}{%- assign aktiv = true -%}{%- endif -%}
+        <a href="{{ url | relative_url }}"{% if aktiv %} aria-current="page"{% endif %}>{{ parts[0] }}</a>
       {%- endfor -%}
     </nav>
   </div>
