@@ -62,7 +62,7 @@ plugins:
 whatsapp_number: ""      # internationale Schreibweise ohne + und Leerzeichen, z. B. "4917612345678"
 youtube_url: "https://www.youtube.com/@FSBirth" # z. B. "https://www.youtube.com/@fs-birth"
 address: "Netzestraße 11, 22547 Hamburg"
-portrait: ""             # z. B. "/bilder/portrait.jpg" – leer = Platzhalter
+portrait: "/bilder/portrait.jpg"   # leer ("") = Platzhalter "SB"
 
 collections:
   referenzen:
