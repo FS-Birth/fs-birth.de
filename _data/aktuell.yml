@@ -1,9 +1,9 @@
 # Startseite: Live-Stream / Ankündigung
 # live: true  -> roter "LIVE"-Hinweis + Button zum Stream (ganz oben)
 # Ankündigung steht immer darunter (Titel leer lassen = Box ausblenden)
-live: false
-live_titel: "Jetzt live aus der Werkstatt"
-live_url: "https://www.youtube.com/@FSBirth"
+live: true
+live_titel: "Test Stream"
+live_url: "https://youtube.com/live/KU9ILEntUbk?feature=share"
 
 ankuendigung_titel: "Die neue Website ist online"
 ankuendigung_text: >-
